@@ -58,21 +58,39 @@ from src.policy import apply_enforcement_policy
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 
-# What each forged token costs the attacker, in the adaptive harness's currency.
-# An attacker shaping their OWN account pays for infrastructure and identity;
-# matching a victim's TOPIC is free, because it is just a matter of what you
-# choose to ask the model about.
-TOKEN_COSTS = {
-    "ip": PRICES["split_infrastructure"],   # a proxy on the victim's egress
-    "asn": PRICES["clean_asn"],             # a host in the victim's ASN
-    "cat": 0.0,                             # free: ask about the same topic
-    "pay": PRICES["verified_payment"],
-    "target": 0.0,                          # free: name the same org
+# What reproducing each of a victim's tokens actually REQUIRES of an attacker.
+#
+# This used to be a dollar table built from `stress_adaptive.PRICES`, and that
+# was a category error worth recording. Those prices are for *evasion*:
+# `clean_asn` ($75) buys **a** clean residential proxy so you look unremarkable,
+# and `split_infrastructure` ($100) gives **your own** accounts separate
+# infrastructure so they stop correlating. Framing needs neither. It needs you
+# to originate from **this specific victim's** ASN and egress IP - which is not
+# a product you buy, it is a network you have to already be inside. Three of the
+# four accounts in that bracket are on corporate networks.
+#
+# So the table reports the requirement rather than a price. Quoting a figure
+# implied a market that exists for hiding and does not exist for this, and the
+# sum it produced ($175) was arithmetically correct and semantically meaningless.
+NONE = "none"                    # ask about the same topic, name the same org
+NETWORK = "network-access"       # be inside the victim's own network
+IDENTITY = "identity-purchase"   # a payment class you can simply buy
+
+TOKEN_ACCESS = {
+    "ip": NETWORK,
+    "asn": NETWORK,
+    "cat": NONE,
+    "target": NONE,
+    "pay": IDENTITY,
 }
+# Ordered cheapest-to-hardest, for sorting. Not a currency - a ranking.
+_ACCESS_RANK = {NONE: 0, IDENTITY: 1, NETWORK: 2}
 
 
-def _cost(toks) -> float:
-    return round(sum(TOKEN_COSTS.get(t.split(":", 1)[0], 0.0) for t in toks), 2)
+def _access(toks) -> str:
+    """The hardest requirement in a token set - that is what gates the attack."""
+    reqs = {TOKEN_ACCESS.get(t.split(":", 1)[0], NONE) for t in toks}
+    return max(reqs, key=lambda r: _ACCESS_RANK[r]) if reqs else NONE
 
 
 def forgeable_tokens(victim_tokens: set[str]) -> set[str]:
@@ -101,8 +119,9 @@ def minimal_framing_sets(victim_tokens: set[str]) -> list[dict]:
             if any(set(prev["tokens"]) < shared for prev in out):
                 continue
             out.append({"tokens": sorted(shared), "reason": reason,
-                        "cost_usd": _cost(shared)})
-    return sorted(out, key=lambda x: (x["cost_usd"], len(x["tokens"])))
+                        "requires": _access(shared)})
+    return sorted(out, key=lambda x: (_ACCESS_RANK[x["requires"]],
+                                      len(x["tokens"])))
 
 
 def analyse() -> dict:
@@ -130,23 +149,52 @@ def analyse() -> dict:
             "tokens": sorted(vt),
             "framing_sets": sets,
             "framable": bool(sets),
-            "cheapest_usd": sets[0]["cost_usd"] if sets else None,
+            "easiest_requirement": sets[0]["requires"] if sets else None,
         })
-    victims.sort(key=lambda v: (v["cheapest_usd"] is None,
-                                v["cheapest_usd"] or 0))
+    victims.sort(key=lambda v: (v["easiest_requirement"] is None,
+                                _ACCESS_RANK.get(v["easiest_requirement"], 9)))
 
-    # Execute the cheapest framing against each framable victim and check what
-    # the pipeline actually does - a link is only an accusation if it survives
-    # attribution, investigation and policy.
-    executed = []
-    for v in victims:
-        if not v["framable"]:
-            continue
+    # Execute the framing and see what the pipeline actually does - a link is
+    # only an accusation if it survives attribution, investigation and policy.
+    #
+    # TWO attacker constructions, because conflating them published a wrong
+    # number. The original harness built the attacker as a copy of `acct_LF01`
+    # and overwrote only the linking tokens, so the attacker kept that actor's
+    # infrastructure and the victim was merged into the whole five-account lure
+    # factory. The cluster then reached `enforce` because five real actors were
+    # sitting in it - the framing supplied the link, the actors supplied the
+    # verdict. Reported as "5 of 5 reach an enforcement decision", which is true
+    # of that construction and not of the attack it appeared to describe.
+    #
+    #   standalone   - a purpose-built burner carrying ONLY the tokens needed to
+    #                  link. This is the attack as described: attacker plus
+    #                  victim, nobody else.
+    #   actor_clone  - the original construction, kept as the upper bound. It
+    #                  requires the attacker to reproduce a known actor's egress
+    #                  infrastructure, which is a far stronger assumption.
+    def _run(v, mode):
         atk_id = "acct_ATTACKER_frame"
-        atk = dict(accounts["acct_LF01"])          # a real actor's profile
+        best = v["framing_sets"][0]
+        if mode == "actor_clone":
+            atk = dict(accounts["acct_LF01"])
+            base_sess = [dict(x) for x in sessions["acct_LF01"]]
+        else:
+            atk = {"account_id": atk_id,
+                   "created_at": "2026-07-20T09:00:00Z",
+                   "email_kind": "freemail",
+                   "signup_ip": "198.51.100.200", "signup_asn": "AS64510",
+                   "signup_country": "NL", "payment": "card_prepaid",
+                   "phone_verified": False, "primary_channel": "chatgpt"}
+            base_sess = [{"session_id": f"atk{i}", "account_id": atk_id,
+                          "ts": f"2026-07-2{i}T10:00:00Z", "channel": "chatgpt",
+                          "category": "phishing_content", "prompt_excerpt": "x",
+                          "disposition": "completed",
+                          "src_ip": atk["signup_ip"], "asn": atk["signup_asn"],
+                          "country": "NL", "target_ref": None}
+                         for i in range(3)]
         atk["account_id"] = atk_id
         target_ref = None
-        for t in v["framing_sets"][0]["tokens"]:
+        for t in best["tokens"]:
             kind, val = t.split(":", 1)
             if kind == "ip":
                 atk["signup_ip"] = val
@@ -156,49 +204,55 @@ def analyse() -> dict:
                 atk["payment"] = val
             elif kind == "target":
                 target_ref = val
-        dom_needed = next((t.split(":", 1)[1]
-                           for t in v["framing_sets"][0]["tokens"]
+        dom_needed = next((t.split(":", 1)[1] for t in best["tokens"]
                            if t.startswith("cat:")), None)
-
         a2 = dict(accounts)
         s2 = {k: list(x) for k, x in sessions.items()}
         a2[atk_id] = atk
-        base_sess = [dict(x) for x in sessions["acct_LF01"]]
-        for s in base_sess:
-            s["account_id"] = atk_id
+        for sx in base_sess:
+            sx["account_id"] = atk_id
+            sx["src_ip"] = atk["signup_ip"]
+            sx["asn"] = atk["signup_asn"]
             if dom_needed:
-                s["category"] = dom_needed
+                sx["category"] = dom_needed
             if target_ref:
-                s["target_ref"] = target_ref
+                sx["target_ref"] = target_ref
         s2[atk_id] = base_sess
-
         clusters, link_log = build_actors(a2, s2)
-        merged = [c for c in clusters
-                  if v["account_id"] in c and atk_id in c]
+        merged = [c for c in clusters if v["account_id"] in c and atk_id in c]
+        if not merged:
+            return {"merged": False, "cluster": None, "cluster_size": 0,
+                    "others_pulled_in": [], "enforcement_decision": None,
+                    "victim_enforced": False}
         sc2 = score_all(a2, s2)
-        decision = None
-        if merged:
-            packet = build_packet(sorted(merged[0]), a2, s2, sc2, {})
-            f = assess_mock(packet)
-            f["cluster_size"] = len(merged[0])
-            f = apply_enforcement_policy(
-                f, [sc2[x]["signals"] for x in merged[0]])
-            decision = f["enforcement_decision"]
+        f = assess_mock(build_packet(sorted(merged[0]), a2, s2, sc2, {}))
+        f["cluster_size"] = len(merged[0])
+        f = apply_enforcement_policy(f, [sc2[x]["signals"] for x in merged[0]])
+        others = [x for x in sorted(merged[0])
+                  if x not in (v["account_id"], atk_id)]
+        return {"merged": True, "cluster": sorted(merged[0]),
+                "cluster_size": len(merged[0]), "others_pulled_in": others,
+                "enforcement_decision": f["enforcement_decision"],
+                "victim_enforced": f["enforcement_decision"] == "enforce"}
+
+    executed = []
+    for v in victims:
+        if not v["framable"]:
+            continue
         executed.append({
-            "victim": v["account_id"],
-            "persona": v["persona"],
-            "cost_usd": v["cheapest_usd"],
-            "merged": bool(merged),
-            "cluster": sorted(merged[0]) if merged else None,
-            "enforcement_decision": decision,
-            "victim_enforced": bool(merged) and decision == "enforce",
-            "link_reason": next((r for a, b, r in link_log
-                                 if atk_id in (a, b)
-                                 and v["account_id"] in (a, b)), None),
+            "victim": v["account_id"], "persona": v["persona"],
+            "requires": v["easiest_requirement"],
+            "tokens": v["framing_sets"][0]["tokens"],
+            "link_reason": v["framing_sets"][0]["reason"],
+            "standalone": _run(v, "standalone"),
+            "actor_clone": _run(v, "actor_clone"),
         })
 
     framable = [v for v in victims if v["framable"]]
-    enforced = [e for e in executed if e["victim_enforced"]]
+    standalone_enforced = [e for e in executed if e["standalone"]["victim_enforced"]]
+    clone_enforced = [e for e in executed if e["actor_clone"]["victim_enforced"]]
+    no_barrier = [v for v in framable if v["easiest_requirement"] == NONE]
+
     return {
         "victims": victims,
         "executed": executed,
@@ -206,73 +260,78 @@ def analyse() -> dict:
             "benign_accounts": len(victims),
             "framable": len(framable),
             "not_framable": len(victims) - len(framable),
-            "successfully_enforced": len(enforced),
-            "cheapest_successful_usd": min(
-                (e["cost_usd"] for e in enforced), default=None),
-            "framable_personas": sorted(
-                {v["persona"] for v in framable}),
+            "framable_with_no_barrier": len(no_barrier),
+            "framable_needing_network_access": len(framable) - len(no_barrier),
+            "enforced_standalone_attacker": len(standalone_enforced),
+            "enforced_actor_clone_attacker": len(clone_enforced),
+            "framable_personas": sorted({v["persona"] for v in framable}),
             "protected_personas": sorted(
                 {v["persona"] for v in victims if not v["framable"]}),
         },
-        "token_costs": TOKEN_COSTS,
+        "token_access": TOKEN_ACCESS,
     }
 
 
 def readme_table(r: dict) -> str:
-    L = ["| Victim | Persona | Dominant topic | Framable? | Cheapest | "
-         "Pipeline outcome |", "|---|---|---|---|---|---|"]
+    L = ["| Victim | Persona | Dominant topic | Attachable? | Requires | "
+         "Standalone attacker | Attached to a known actor |",
+         "|---|---|---|---|---|---|---|"]
     ex = {e["victim"]: e for e in r["executed"]}
     for v in r["victims"]:
         e = ex.get(v["account_id"])
-        outcome = ("—" if not v["framable"]
-                   else (e["enforcement_decision"] or "not merged")
-                   if e else "—")
-        cost = ("—" if v["cheapest_usd"] is None
-                else f"${v['cheapest_usd']:.0f}")
+        req = v["easiest_requirement"] or "—"
+        sa = e["standalone"]["enforcement_decision"] if e else None
+        ac = e["actor_clone"]["enforcement_decision"] if e else None
         L.append(f"| `{v['account_id']}` | {v['persona']} | "
                  f"`{v['dominant_category']}` | "
-                 f"{'**yes**' if v['framable'] else 'no'} | {cost} | "
-                 f"{outcome} |")
-    s = r["summary"]
-    L.append("")
-    L.append(f"{s['framable']} of {s['benign_accounts']} benign accounts are "
-             f"framable; {s['successfully_enforced']} reach an `enforce` "
-             f"decision, cheapest at "
-             f"${s['cheapest_successful_usd']:.0f}."
-             if s["cheapest_successful_usd"] is not None else
-             f"{s['framable']} of {s['benign_accounts']} benign accounts are "
-             f"framable; none reached an enforce decision.")
+                 f"{'**yes**' if v['framable'] else 'no'} | `{req}` | "
+                 f"{sa or '—'} | {ac or '—'} |")
+    s_ = r["summary"]
+    L += ["",
+          f"{s_['framable']} of {s_['benign_accounts']} benign accounts can be "
+          f"attached to an attacker's account: "
+          f"{s_['framable_with_no_barrier']} with no barrier at all, "
+          f"{s_['framable_needing_network_access']} only from inside the "
+          f"victim's own network. A standalone attacker gets "
+          f"{s_['enforced_standalone_attacker']} of them enforced against; an "
+          f"attacker who can also attach them to a known actor cluster gets "
+          f"{s_['enforced_actor_clone_attacker']}."]
     return "\n".join(L)
 
 
 def render(r: dict) -> str:
-    L = ["=== who can be framed, and for how much ==="]
+    L = ["=== who can be attached to an attacker's account, and what it takes ==="]
     for v in r["victims"]:
-        tag = "FRAMABLE" if v["framable"] else "not framable"
-        cost = "" if v["cheapest_usd"] is None else f" @ ${v['cheapest_usd']:.0f}"
+        tag = "ATTACHABLE" if v["framable"] else "not attachable"
+        req = f" [{v['easiest_requirement']}]" if v["framable"] else ""
         L.append(f"  {v['account_id']:26s} {v['persona']:22s} "
-                 f"dom={str(v['dominant_category']):18s} {tag}{cost}")
+                 f"dom={str(v['dominant_category']):18s} {tag}{req}")
         if v["framable"]:
             best = v["framing_sets"][0]
-            L.append(f"      cheapest set: {best['tokens']} -> {best['reason']}")
-    L.append("\n=== executing the cheapest framing against each ===")
+            L.append(f"      easiest set: {best['tokens']} -> {best['reason']}")
+    L.append("\n=== what the pipeline then does, by attacker construction ===")
+    L.append(f"  {'victim':26s} {'standalone':>14s}   {'actor-clone':>14s}   pulled in")
     for e in r["executed"]:
-        L.append(f"  {e['victim']:26s} merged={str(e['merged']):5s} "
-                 f"decision={str(e['enforcement_decision']):12s} "
-                 f"${e['cost_usd']:.0f}")
-        if e["link_reason"]:
-            L.append(f"      link: {e['link_reason']}")
-    s = r["summary"]
-    L.append(f"\n=== summary ===")
-    L.append(f"  benign accounts:        {s['benign_accounts']}")
-    L.append(f"  framable:               {s['framable']}")
-    L.append(f"  not framable:           {s['not_framable']}")
-    L.append(f"  reached enforce:        {s['successfully_enforced']}")
-    L.append(f"  cheapest successful:    "
-             + (f"${s['cheapest_successful_usd']:.0f}"
-                if s["cheapest_successful_usd"] is not None else "n/a"))
-    L.append(f"  framable personas:      {s['framable_personas']}")
-    L.append(f"  structurally protected: {s['protected_personas']}")
+        sa, ac = e["standalone"], e["actor_clone"]
+        L.append(f"  {e['victim']:26s} {str(sa['enforcement_decision']):>14s}   "
+                 f"{str(ac['enforcement_decision']):>14s}   "
+                 f"{len(ac['others_pulled_in'])} other account(s)")
+    s_ = r["summary"]
+    L += ["\n=== summary ===",
+          f"  benign accounts:                 {s_['benign_accounts']}",
+          f"  attachable:                      {s_['framable']}",
+          f"    of those, no barrier at all:   {s_['framable_with_no_barrier']}",
+          f"    needing the victim's network:  {s_['framable_needing_network_access']}",
+          f"  not attachable:                  {s_['not_framable']}",
+          f"  enforced, standalone attacker:   {s_['enforced_standalone_attacker']}",
+          f"  enforced, attached to an actor:  {s_['enforced_actor_clone_attacker']}",
+          f"  attachable personas:             {s_['framable_personas']}",
+          f"  structurally protected:          {s_['protected_personas']}",
+          "",
+          "  The gap between the two enforcement rows is the finding. Attaching",
+          "  yourself to a chosen person is easy; making that stick as an",
+          "  enforcement needs a known actor in the cluster, which means",
+          "  reproducing that actor's infrastructure - not just the victim's."]
     return "\n".join(L)
 
 

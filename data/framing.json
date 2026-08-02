@@ -18,7 +18,7 @@
             "target:our-company"
           ],
           "reason": "shared victim ['our-company'] + corroborating ['cat:phishing_content']",
-          "cost_usd": 0.0
+          "requires": "none"
         },
         {
           "tokens": [
@@ -26,7 +26,7 @@
             "target:our-company"
           ],
           "reason": "shared victim ['our-company'] + corroborating ['asn:AS64502']",
-          "cost_usd": 75.0
+          "requires": "network-access"
         },
         {
           "tokens": [
@@ -34,7 +34,7 @@
             "target:our-company"
           ],
           "reason": "shared victim ['our-company'] + corroborating ['ip:198.51.100.13']",
-          "cost_usd": 100.0
+          "requires": "network-access"
         },
         {
           "tokens": [
@@ -43,11 +43,11 @@
             "ip:198.51.100.13"
           ],
           "reason": "3 corroborating attributes (asn:AS64502, cat:phishing_content, ip:198.51.100.13)",
-          "cost_usd": 175.0
+          "requires": "network-access"
         }
       ],
       "framable": true,
-      "cheapest_usd": 0.0
+      "easiest_requirement": "none"
     },
     {
       "account_id": "acct_NEG_pentest",
@@ -67,11 +67,11 @@
             "ip:198.51.100.12"
           ],
           "reason": "3 corroborating attributes (asn:AS64501, cat:exploit_help, ip:198.51.100.12)",
-          "cost_usd": 175.0
+          "requires": "network-access"
         }
       ],
       "framable": true,
-      "cheapest_usd": 175.0
+      "easiest_requirement": "network-access"
     },
     {
       "account_id": "acct_NEG_ctf",
@@ -91,11 +91,11 @@
             "ip:198.51.100.14"
           ],
           "reason": "3 corroborating attributes (asn:AS64505, cat:exploit_help, ip:198.51.100.14)",
-          "cost_usd": 175.0
+          "requires": "network-access"
         }
       ],
       "framable": true,
-      "cheapest_usd": 175.0
+      "easiest_requirement": "network-access"
     },
     {
       "account_id": "acct_NEG_detection",
@@ -115,11 +115,11 @@
             "ip:198.51.100.15"
           ],
           "reason": "3 corroborating attributes (asn:AS64506, cat:malware_dev, ip:198.51.100.15)",
-          "cost_usd": 175.0
+          "requires": "network-access"
         }
       ],
       "framable": true,
-      "cheapest_usd": 175.0
+      "easiest_requirement": "network-access"
     },
     {
       "account_id": "acct_NEG_journalist",
@@ -139,11 +139,11 @@
             "ip:198.51.100.16"
           ],
           "reason": "3 corroborating attributes (asn:AS64504, cat:recon, ip:198.51.100.16)",
-          "cost_usd": 175.0
+          "requires": "network-access"
         }
       ],
       "framable": true,
-      "cheapest_usd": 175.0
+      "easiest_requirement": "network-access"
     },
     {
       "account_id": "acct_NEG_sre",
@@ -156,7 +156,7 @@
       ],
       "framing_sets": [],
       "framable": false,
-      "cheapest_usd": null
+      "easiest_requirement": null
     },
     {
       "account_id": "acct_NEG_novelist",
@@ -169,7 +169,7 @@
       ],
       "framing_sets": [],
       "framable": false,
-      "cheapest_usd": null
+      "easiest_requirement": null
     },
     {
       "account_id": "acct_NEG_vpncoincidence",
@@ -182,7 +182,7 @@
       ],
       "framing_sets": [],
       "framable": false,
-      "cheapest_usd": null
+      "easiest_requirement": null
     },
     {
       "account_id": "acct_BG01",
@@ -195,7 +195,7 @@
       ],
       "framing_sets": [],
       "framable": false,
-      "cheapest_usd": null
+      "easiest_requirement": null
     },
     {
       "account_id": "acct_BG02",
@@ -208,7 +208,7 @@
       ],
       "framing_sets": [],
       "framable": false,
-      "cheapest_usd": null
+      "easiest_requirement": null
     },
     {
       "account_id": "acct_BG03",
@@ -221,7 +221,7 @@
       ],
       "framing_sets": [],
       "framable": false,
-      "cheapest_usd": null
+      "easiest_requirement": null
     },
     {
       "account_id": "acct_BG04",
@@ -234,7 +234,7 @@
       ],
       "framing_sets": [],
       "framable": false,
-      "cheapest_usd": null
+      "easiest_requirement": null
     },
     {
       "account_id": "acct_BG05",
@@ -247,7 +247,7 @@
       ],
       "framing_sets": [],
       "framable": false,
-      "cheapest_usd": null
+      "easiest_requirement": null
     },
     {
       "account_id": "acct_BG06",
@@ -260,107 +260,238 @@
       ],
       "framing_sets": [],
       "framable": false,
-      "cheapest_usd": null
+      "easiest_requirement": null
     }
   ],
   "executed": [
     {
       "victim": "acct_NEG_trainer",
       "persona": "awareness_trainer",
-      "cost_usd": 0.0,
-      "merged": true,
-      "cluster": [
-        "acct_ATTACKER_frame",
-        "acct_LF01",
-        "acct_LF02",
-        "acct_LF03",
-        "acct_LF04",
-        "acct_LF05",
-        "acct_NEG_trainer"
+      "requires": "none",
+      "tokens": [
+        "cat:phishing_content",
+        "target:our-company"
       ],
-      "enforcement_decision": "enforce",
-      "victim_enforced": true,
-      "link_reason": "shared victim ['our-company'] + corroborating ['cat:phishing_content']"
+      "link_reason": "shared victim ['our-company'] + corroborating ['cat:phishing_content']",
+      "standalone": {
+        "merged": true,
+        "cluster": [
+          "acct_ATTACKER_frame",
+          "acct_NEG_trainer"
+        ],
+        "cluster_size": 2,
+        "others_pulled_in": [],
+        "enforcement_decision": "gather_more",
+        "victim_enforced": false
+      },
+      "actor_clone": {
+        "merged": true,
+        "cluster": [
+          "acct_ATTACKER_frame",
+          "acct_LF01",
+          "acct_LF02",
+          "acct_LF03",
+          "acct_LF04",
+          "acct_LF05",
+          "acct_NEG_trainer"
+        ],
+        "cluster_size": 7,
+        "others_pulled_in": [
+          "acct_LF01",
+          "acct_LF02",
+          "acct_LF03",
+          "acct_LF04",
+          "acct_LF05"
+        ],
+        "enforcement_decision": "enforce",
+        "victim_enforced": true
+      }
     },
     {
       "victim": "acct_NEG_pentest",
       "persona": "pentester",
-      "cost_usd": 175.0,
-      "merged": true,
-      "cluster": [
-        "acct_ATTACKER_frame",
-        "acct_LF01",
-        "acct_LF02",
-        "acct_LF03",
-        "acct_LF04",
-        "acct_LF05",
-        "acct_NEG_pentest"
+      "requires": "network-access",
+      "tokens": [
+        "asn:AS64501",
+        "cat:exploit_help",
+        "ip:198.51.100.12"
       ],
-      "enforcement_decision": "enforce",
-      "victim_enforced": true,
-      "link_reason": "3 corroborating attributes (asn:AS64501, cat:exploit_help, ip:198.51.100.12)"
+      "link_reason": "3 corroborating attributes (asn:AS64501, cat:exploit_help, ip:198.51.100.12)",
+      "standalone": {
+        "merged": true,
+        "cluster": [
+          "acct_ATTACKER_frame",
+          "acct_NEG_pentest"
+        ],
+        "cluster_size": 2,
+        "others_pulled_in": [],
+        "enforcement_decision": "gather_more",
+        "victim_enforced": false
+      },
+      "actor_clone": {
+        "merged": true,
+        "cluster": [
+          "acct_ATTACKER_frame",
+          "acct_LF01",
+          "acct_LF02",
+          "acct_LF03",
+          "acct_LF04",
+          "acct_LF05",
+          "acct_NEG_pentest"
+        ],
+        "cluster_size": 7,
+        "others_pulled_in": [
+          "acct_LF01",
+          "acct_LF02",
+          "acct_LF03",
+          "acct_LF04",
+          "acct_LF05"
+        ],
+        "enforcement_decision": "enforce",
+        "victim_enforced": true
+      }
     },
     {
       "victim": "acct_NEG_ctf",
       "persona": "ctf_student",
-      "cost_usd": 175.0,
-      "merged": true,
-      "cluster": [
-        "acct_ATTACKER_frame",
-        "acct_LF01",
-        "acct_LF02",
-        "acct_LF03",
-        "acct_LF04",
-        "acct_LF05",
-        "acct_NEG_ctf"
+      "requires": "network-access",
+      "tokens": [
+        "asn:AS64505",
+        "cat:exploit_help",
+        "ip:198.51.100.14"
       ],
-      "enforcement_decision": "enforce",
-      "victim_enforced": true,
-      "link_reason": "3 corroborating attributes (asn:AS64505, cat:exploit_help, ip:198.51.100.14)"
+      "link_reason": "3 corroborating attributes (asn:AS64505, cat:exploit_help, ip:198.51.100.14)",
+      "standalone": {
+        "merged": true,
+        "cluster": [
+          "acct_ATTACKER_frame",
+          "acct_NEG_ctf"
+        ],
+        "cluster_size": 2,
+        "others_pulled_in": [],
+        "enforcement_decision": "gather_more",
+        "victim_enforced": false
+      },
+      "actor_clone": {
+        "merged": true,
+        "cluster": [
+          "acct_ATTACKER_frame",
+          "acct_LF01",
+          "acct_LF02",
+          "acct_LF03",
+          "acct_LF04",
+          "acct_LF05",
+          "acct_NEG_ctf"
+        ],
+        "cluster_size": 7,
+        "others_pulled_in": [
+          "acct_LF01",
+          "acct_LF02",
+          "acct_LF03",
+          "acct_LF04",
+          "acct_LF05"
+        ],
+        "enforcement_decision": "enforce",
+        "victim_enforced": true
+      }
     },
     {
       "victim": "acct_NEG_detection",
       "persona": "detection_engineer",
-      "cost_usd": 175.0,
-      "merged": true,
-      "cluster": [
-        "acct_ATTACKER_frame",
-        "acct_LF01",
-        "acct_LF02",
-        "acct_LF03",
-        "acct_LF04",
-        "acct_LF05",
-        "acct_NEG_detection"
+      "requires": "network-access",
+      "tokens": [
+        "asn:AS64506",
+        "cat:malware_dev",
+        "ip:198.51.100.15"
       ],
-      "enforcement_decision": "enforce",
-      "victim_enforced": true,
-      "link_reason": "3 corroborating attributes (asn:AS64506, cat:malware_dev, ip:198.51.100.15)"
+      "link_reason": "3 corroborating attributes (asn:AS64506, cat:malware_dev, ip:198.51.100.15)",
+      "standalone": {
+        "merged": true,
+        "cluster": [
+          "acct_ATTACKER_frame",
+          "acct_NEG_detection"
+        ],
+        "cluster_size": 2,
+        "others_pulled_in": [],
+        "enforcement_decision": "gather_more",
+        "victim_enforced": false
+      },
+      "actor_clone": {
+        "merged": true,
+        "cluster": [
+          "acct_ATTACKER_frame",
+          "acct_LF01",
+          "acct_LF02",
+          "acct_LF03",
+          "acct_LF04",
+          "acct_LF05",
+          "acct_NEG_detection"
+        ],
+        "cluster_size": 7,
+        "others_pulled_in": [
+          "acct_LF01",
+          "acct_LF02",
+          "acct_LF03",
+          "acct_LF04",
+          "acct_LF05"
+        ],
+        "enforcement_decision": "enforce",
+        "victim_enforced": true
+      }
     },
     {
       "victim": "acct_NEG_journalist",
       "persona": "journalist",
-      "cost_usd": 175.0,
-      "merged": true,
-      "cluster": [
-        "acct_ATTACKER_frame",
-        "acct_LF01",
-        "acct_LF02",
-        "acct_LF03",
-        "acct_LF04",
-        "acct_LF05",
-        "acct_NEG_journalist"
+      "requires": "network-access",
+      "tokens": [
+        "asn:AS64504",
+        "cat:recon",
+        "ip:198.51.100.16"
       ],
-      "enforcement_decision": "enforce",
-      "victim_enforced": true,
-      "link_reason": "3 corroborating attributes (asn:AS64504, cat:recon, ip:198.51.100.16)"
+      "link_reason": "3 corroborating attributes (asn:AS64504, cat:recon, ip:198.51.100.16)",
+      "standalone": {
+        "merged": true,
+        "cluster": [
+          "acct_ATTACKER_frame",
+          "acct_NEG_journalist"
+        ],
+        "cluster_size": 2,
+        "others_pulled_in": [],
+        "enforcement_decision": "gather_more",
+        "victim_enforced": false
+      },
+      "actor_clone": {
+        "merged": true,
+        "cluster": [
+          "acct_ATTACKER_frame",
+          "acct_LF01",
+          "acct_LF02",
+          "acct_LF03",
+          "acct_LF04",
+          "acct_LF05",
+          "acct_NEG_journalist"
+        ],
+        "cluster_size": 7,
+        "others_pulled_in": [
+          "acct_LF01",
+          "acct_LF02",
+          "acct_LF03",
+          "acct_LF04",
+          "acct_LF05"
+        ],
+        "enforcement_decision": "enforce",
+        "victim_enforced": true
+      }
     }
   ],
   "summary": {
     "benign_accounts": 14,
     "framable": 5,
     "not_framable": 9,
-    "successfully_enforced": 5,
-    "cheapest_successful_usd": 0.0,
+    "framable_with_no_barrier": 1,
+    "framable_needing_network_access": 4,
+    "enforced_standalone_attacker": 0,
+    "enforced_actor_clone_attacker": 5,
     "framable_personas": [
       "awareness_trainer",
       "ctf_student",
@@ -375,11 +506,11 @@
       "vpn_coincidence"
     ]
   },
-  "token_costs": {
-    "ip": 100.0,
-    "asn": 75.0,
-    "cat": 0.0,
-    "pay": 25.0,
-    "target": 0.0
+  "token_access": {
+    "ip": "network-access",
+    "asn": "network-access",
+    "cat": "none",
+    "target": "none",
+    "pay": "identity-purchase"
   }
 }
