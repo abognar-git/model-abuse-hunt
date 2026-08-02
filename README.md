@@ -94,13 +94,26 @@ keeping a human in the loop** — not politeness, arithmetic.
 
 **And the attack nobody had measured: you can aim it at someone.** Every earlier
 test asked whether an innocent person gets caught *by accident*. Nobody asked
-whether an attacker can get a specific person banned **on purpose**. Running the
-real linking rules against all fourteen innocent accounts: **five can be framed,
-all five reach an enforcement decision, and the cheapest costs nothing at all.**
-The nine who are safe are the ordinary users. The five who can be targeted are
-the penetration tester, the malware analyst, the security trainer, the
-hacking-contest player and the journalist — **protection turns out to be
-inversely proportional to how much your job resembles the thing being hunted.**
+whether an attacker can pick the victim **on purpose** — build their own account
+until the system ties the two together.
+
+They can. Running the real linking rules against all fourteen innocent accounts,
+**five of them can be attached to an account an attacker controls, and for one of
+those five there is no barrier at all.** The nine who are safe are the ordinary
+users. The five who can be targeted are the penetration tester, the malware
+analyst, the security trainer, the hacking-contest player and the journalist —
+**protection turns out to be inversely proportional to how much your job
+resembles the thing being hunted.**
+
+But attaching someone is not the same as getting them banned, and separating the
+two took a control I should have run the first time. An attacker who simply
+builds a suspicious account and links it to the victim gets that person **queued
+for review, not enforced against** — all five, every time. Enforcement only
+follows when the victim is attached to a cluster of *already-known actors*, which
+means reproducing a real actor's infrastructure rather than just the victim's.
+**The reliable part of this attack is getting someone investigated. Getting them
+banned is a different and much harder thing, and this repo published the two as
+one number.**
 
 > **The through-line, arrived at from every direction:** an account is not what
 > it typed, it is how it behaved. A content-weighted score, a lead treated as a
@@ -846,7 +859,7 @@ accounts cannot validate one.
 
 ---
 
-### Getting someone else banned on purpose
+### Getting someone else investigated on purpose
 
 `cost_frontier` asks what it costs an actor to disappear. Finding #19 asks
 whether someone wrongly caught up in a cluster can get back out, and finds they
@@ -854,43 +867,85 @@ cannot. Neither asks the question an adversary would ask first: **can I choose
 who gets caught?**
 
 Not "will an innocent person be swept up by accident" — that is already
-measured, and the VPN decoy survives it. This is deliberate. An attacker who
-wants a particular researcher, competitor or journalist removed from the
-platform, and who shapes their *own* account until the attribution layer ties
-the two together. Every input needed is on the attacker's side.
+measured, and the VPN decoy survives it. This is deliberate: an attacker who
+wants a particular researcher, competitor or journalist off the platform, and
+who shapes their *own* account until the attribution layer ties the two
+together. Every input needed is on the attacker's side.
 
-Running the real linking rules against all 14 innocent accounts:
+Running the real linking rules against all 14 innocent accounts, and then
+running the two attacks separately:
 
 | | |
 |---|---|
-| Can be deliberately framed | **5 of 14** |
-| Of those, reach an `enforce` decision | **5 of 5** |
-| Cheapest successful attack | **$0** |
+| Can be deliberately attached to an attacker's account | **5 of 14** |
+| Attachable with no barrier at all (shared org + shared topic) | **1 of 5** |
+| Attachable only from inside the victim's own network | **4 of 5** |
+| Attacker builds a suspicious account of their own → outcome | **`gather_more`, all 5** |
+| Attacker attaches the victim to an existing actor cluster → outcome | **`enforce`, all 5** |
 | Everyone else | structurally safe |
 
-The free one is the security-awareness trainer. Linking to her needs a shared
-reference to the same organisation and a shared topic, and both are free —
-naming an org costs nothing, and asking about phishing costs nothing. The other
-four cost about $175: a proxy on the victim's egress and a host in their
-network. Matching their topic is, again, free.
+**For one of the five, the attachment is free.** Linking to the
+security-awareness trainer needs a shared reference to the same organisation and
+a shared topic. Naming an org costs nothing; asking about phishing costs
+nothing. There is no barrier to remove.
 
-The nine who cannot be touched are the ordinary users, and the reason is a
-guard added for an entirely different purpose. After an earlier experiment
-found that two strangers behind one VPN were being merged because both wrote
-code, the linker was changed to only treat a *distinctive* activity — offensive
-or reconnaissance — as a behavioural tie. That guard is now load-bearing in a
-way nobody intended: an account is linkable exactly when its main activity is
-offensive or recon.
+**The other four are not a matter of cost at all.** Attaching to them requires
+originating from the victim's own ASN and their own egress IP — and three of the
+four are on corporate networks. That is not something you buy, it is somewhere
+you have to already be. An earlier version of this section put **$175** on it,
+taken from the evasion harness's price list where $75 buys *a* clean residential
+proxy and $100 gives your own accounts *separate* infrastructure. Neither is
+what framing needs, and quoting a price implied a market that does not exist for
+this. **The cost of hiding is purchasable. The cost of framing someone is
+access, and access is not a subscription.**
 
-Which means the five who can be framed are the penetration tester, the
+**Getting them enforced against is the harder half, and an earlier version said
+it was the same half.** The number published here used to be "5 of 5 reach an
+enforcement decision", taken from a harness that builds the attacker as a *copy
+of an existing actor*. Because it copies that actor's infrastructure too, the
+victim is not merged with the attacker — she is merged into the whole
+five-account lure factory, and the cluster reaches `enforce` because five real
+actors are sitting in it. The framing supplied the link; the actors supplied the
+verdict.
+
+The control is the obvious one, and it took a reader's question to prompt it.
+Build the attacker as a *standalone* account — burner infrastructure, prepaid
+card, no verified phone, carrying only the tokens needed to link — and every one
+of the five victims is merged and then stops at **`gather_more`**. Three
+attacker profiles were tried, from a fully verified clean account to a bare
+burner. None reached `enforce`. Both constructions now run in
+`stress_framing.py` and both columns are reported, so the two can no longer be
+published as one number.
+
+So the honest shape is two findings rather than one:
+
+- **Attaching yourself to a chosen person is easy**, and it puts them in an
+  analyst's queue they cannot argue their way out of — finding #19 shows
+  `coordination` is not something you can produce a document against.
+- **Getting them banned requires attaching them to an established actor
+  cluster**, which means reproducing a real actor's egress infrastructure, not
+  just the victim's. That is a materially stronger assumption than "naming an
+  org is free", and it was hidden inside how the harness happened to build its
+  attacker.
+
+The nine who cannot be touched are the ordinary users, and the reason is a guard
+added for an entirely different purpose. After an earlier experiment found two
+strangers behind one VPN being merged because both wrote code, the linker was
+changed to treat only a *distinctive* activity — offensive or reconnaissance —
+as a behavioural tie. That guard is load-bearing here in a way nobody intended:
+an account is linkable exactly when its main activity is offensive or recon.
+
+Which means the five who can be targeted are the penetration tester, the
 detection engineer, the security trainer, the CTF player and the journalist.
 **Protection is inversely proportional to how much your job resembles the thing
-being hunted.** The people this system exists to shield are the only ones it
-can be aimed at.
+being hunted.** The people this system exists to shield are the only ones it can
+be aimed at.
 
 The headline safety number has to be read in that light. "0 of 14 false
 accusations" is measured against an adversary who is not trying to cause one.
-Against one who is, on this dataset, it is 5 of 14.
+Against one who is, five of the fourteen can be put in front of an investigator,
+and the same five can be enforced against by an attacker willing to do the
+harder half.
 
 ---
 
@@ -1514,7 +1569,7 @@ and then scored as the pipeline actually scores it:
 | 22 | **The seed seeded nothing.** The plan was to re-run the generator across 50 seeds for error bars. It calls `random.seed(31337)` and then never calls a random function — the data is entirely hand-written, so 50 seeds would have produced 50 identical datasets and intervals of width zero. Error bars now come from perturbing the dataset instead. **0 false accusations across all 180 runs.** The recall numbers get a narrower scope on purpose: 9/9 found and 4/4 actors hold across the **60** runs that perturb the fixture without touching the scorer, which are the only ones that are error bars at all. Of the other 120, a hundred deliberately delete sessions — a degradation curve, where recall falls to 5/9 as designed — and twenty swap in finding #20b's scorer. The one thing that wobbles is whether the detection engineer trips the lead line, which hinges on **three minutes** of timing. (Reproduce with `--draws 20`; the bare command defaults to 100 draws and rewrites the artifact with five times the runs.) | `stress_fixture --draws 20` |
 | 23 | **Detection needs history, and the attacker decides how much history to leave.** Cutting every account back to its first *k* sessions, the pipeline only reaches full strength at **k = 12**. At k = 1 it recovers **2 of 4** actors. The strongest signals are structurally unable to fire before then — baseline drift needs six sessions to have a baseline. So an operator who discards accounts at 11 sessions is not evading detection; **detection has not become possible yet**, and no amount of money is involved. | `stress_fixture` |
 | 24 | **Every headline number came from a single run of a non-deterministic model.** No temperature is pinned, so `findings.jsonl` is one draw — and it is the file the 0/14 and 9/9 are computed from. Finding #18 already made repeat runs mandatory *for the judge*; that lesson had never been applied here. Across 12 runs: **every enforcement decision is identical, every safety property holds every time.** The decisions are solid. The **confidence is not** — on the detection engineer the confidence band is a **coin flip**, and that band is exactly what the policy's floor gates on. | `stress_reps` |
-| 25 | **Attribution can be aimed. I priced what it costs to get someone else banned.** Earlier work priced *hiding*; finding #19 showed a wrongly-merged bystander cannot get out. Neither asked whether an attacker can **pick the victim**. Running the real linking rules against every innocent account: **5 of 14 can be deliberately framed, and all 5 reach `enforce`. The cheapest costs nothing at all.** The 9 who are safe are the ordinary users — because an account only becomes linkable when its main activity is offensive or recon. **Your protection is inversely proportional to how much your job resembles the thing being hunted**, and "0 of 14 false accusations" was measured against an adversary who wasn't trying. [Detail ↓](#getting-someone-else-banned-on-purpose) | `stress_framing` |
+| 25 | **Attribution can be aimed, and I first published the aiming as easier than it is.** Earlier work priced *hiding*; finding #19 showed a wrongly-merged bystander cannot get out. Neither asked whether an attacker can **pick the victim**. Running the real linking rules against every innocent account: **5 of 14 can be attached to an attacker's account**, one of them with no barrier at all. But a standalone attacker only gets the victim **queued for review — 0 of 5 reach `enforce`.** Enforcement needs the victim attached to an *existing actor cluster*, which means reproducing that actor's infrastructure. The published number was "5 of 5 reach enforce", from a harness whose attacker was a copy of a real actor and therefore dragged the victim into the five-account lure factory; both constructions are now measured separately. The 9 who are safe are the ordinary users — an account becomes linkable exactly when its main activity is offensive or recon. **Your protection is inversely proportional to how much your job resembles the thing being hunted.** [Detail ↓](#getting-someone-else-investigated-on-purpose) | `stress_framing` |
 | 26 | **The human who approves enforcement cannot see enough to catch a mistake.** Rule 1 — nothing automatic, a human approves every action — is this project's central safety claim, and the empty automatic-action region is proven. What was never checked is whether the reviewer is *able* to catch anything, since they see a summary card, not the evidence. Measured the way finding #18 taught: it **fails to tell sound recommendations from unsound ones**. The two bad cards it approved every single time are this repo's own two failure modes — the over-flagged detection engineer, and finding #25's framed innocent — while it rejected a *correct* one. It is reading a "corroborated: yes" field rather than weighing the case. **Presence, not strength, for the fourth time — now in the gate the whole safety argument rests on.** [Detail ↓](#the-human-check-that-cannot-actually-check) | `stress_reviewer` |
 
 The through-line, arrived at from every direction:
@@ -1669,10 +1724,12 @@ asserted.**
   a verdict, with an adversary who is already writing directly into the model's
   prompt.
 
-- **`assay`** — *what the refusal is worth.* These two study systems that catch
-  people. That one asks what an AI safety control costs the person it fires on,
-  by measuring how well anyone can tell a working answer from a plausible-looking
-  broken one. Not yet published.
+- **[`assay`](https://github.com/abognar-git/assay)** — *what the refusal is
+  worth.* These two study systems that catch people. That one asks what an AI
+  safety control costs the person it fires on, by measuring how well anyone can
+  tell a working answer from a plausible-looking broken one. All 448 attempts
+  are browsable in an
+  [interactive explorer](https://abognar-git.github.io/assay/explorer.html).
 
 The first two share about 250 lines of code and converged on four conclusions
 independently — including **the same bug wearing two different costumes.** Both
