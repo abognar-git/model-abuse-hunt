@@ -1,0 +1,203 @@
+{
+  "exp1_self_claim": {
+    "upheld": 4,
+    "total": 4
+  },
+  "exp2_bought": {
+    "subject_ids": [
+      "acct_RA01"
+    ],
+    "enforcement_basis": [
+      "automation_cadence",
+      "burner_infra",
+      "target_fixation"
+    ],
+    "claims_checked": [
+      {
+        "kind": "identity_verification",
+        "status": "verified",
+        "rebuts": [
+          "burner_infra"
+        ],
+        "note": "confirmed via payment processor + phone carrier, queried directly"
+      },
+      {
+        "kind": "asn_ownership",
+        "status": "verified",
+        "rebuts": [
+          "burner_infra"
+        ],
+        "note": "confirmed via regional registry: does this range belong to the employer"
+      }
+    ],
+    "rebutted": [
+      "burner_infra"
+    ],
+    "remaining": [
+      "automation_cadence",
+      "target_fixation"
+    ],
+    "outcome": "partial",
+    "requires_human_approval": true,
+    "auto_reversed": false,
+    "reasons": [
+      "rebutted ['burner_infra']; still standing ['automation_cadence', 'target_fixation']"
+    ]
+  },
+  "exp3a_detection": {
+    "subject_ids": [
+      "acct_NEG_detection"
+    ],
+    "enforcement_basis": [],
+    "claims_checked": [
+      {
+        "kind": "employer_domain",
+        "status": "verified",
+        "rebuts": [
+          "burner_infra"
+        ],
+        "note": "confirmed via domain registration and MX ownership, queried directly"
+      },
+      {
+        "kind": "identity_verification",
+        "status": "verified",
+        "rebuts": [
+          "burner_infra"
+        ],
+        "note": "confirmed via payment processor + phone carrier, queried directly"
+      },
+      {
+        "kind": "engagement_letter",
+        "status": "verified",
+        "rebuts": [
+          "capability_trajectory",
+          "target_fixation"
+        ],
+        "note": "confirmed via named client contacted out of band; scope and dates confirmed"
+      }
+    ],
+    "rebutted": [],
+    "remaining": [],
+    "outcome": "reversed",
+    "requires_human_approval": true,
+    "auto_reversed": false,
+    "reasons": [
+      "the enforcement rested on no corroborating signal at all"
+    ]
+  },
+  "exp3b_bystander": {
+    "subject_ids": [
+      "acct_LF01",
+      "acct_LF02",
+      "acct_LF03",
+      "acct_LF04",
+      "acct_LF05",
+      "acct_NEG_vpncoincidence"
+    ],
+    "enforcement_basis": [
+      "burner_infra",
+      "coordination",
+      "refusal_farming"
+    ],
+    "claims_checked": [
+      {
+        "kind": "employer_domain",
+        "status": "verified",
+        "rebuts": [
+          "burner_infra"
+        ],
+        "note": "confirmed via domain registration and MX ownership, queried directly"
+      },
+      {
+        "kind": "identity_verification",
+        "status": "verified",
+        "rebuts": [
+          "burner_infra"
+        ],
+        "note": "confirmed via payment processor + phone carrier, queried directly"
+      },
+      {
+        "kind": "engagement_letter",
+        "status": "verified",
+        "rebuts": [
+          "capability_trajectory",
+          "target_fixation"
+        ],
+        "note": "confirmed via named client contacted out of band; scope and dates confirmed"
+      }
+    ],
+    "rebutted": [
+      "burner_infra"
+    ],
+    "remaining": [
+      "coordination",
+      "refusal_farming"
+    ],
+    "outcome": "partial",
+    "requires_human_approval": true,
+    "auto_reversed": false,
+    "reasons": [
+      "rebutted ['burner_infra']; still standing ['coordination', 'refusal_farming']",
+      "['coordination', 'refusal_farming'] cannot be rebutted by any channel this system offers - see UNREBUTTABLE"
+    ]
+  },
+  "exp4_ledger": [
+    {
+      "subject_ids": [
+        "acct_LF01",
+        "acct_LF02",
+        "acct_LF03",
+        "acct_LF04",
+        "acct_LF05"
+      ],
+      "basis": [
+        "burner_infra",
+        "coordination",
+        "refusal_farming"
+      ],
+      "rebuttable": [
+        "burner_infra"
+      ]
+    },
+    {
+      "subject_ids": [
+        "acct_CD01",
+        "acct_CD02"
+      ],
+      "basis": [
+        "burner_infra",
+        "coordination"
+      ],
+      "rebuttable": [
+        "burner_infra"
+      ]
+    },
+    {
+      "subject_ids": [
+        "acct_RA01"
+      ],
+      "basis": [
+        "automation_cadence",
+        "burner_infra",
+        "target_fixation"
+      ],
+      "rebuttable": [
+        "automation_cadence",
+        "burner_infra",
+        "target_fixation"
+      ]
+    },
+    {
+      "subject_ids": [
+        "acct_SK01"
+      ],
+      "basis": [
+        "automation_cadence",
+        "baseline_drift"
+      ],
+      "rebuttable": [
+        "automation_cadence"
+      ]
+    }
+  ]
+}

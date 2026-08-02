@@ -1,0 +1,299 @@
+{
+  "control": {
+    "topic": {
+      "same_topic_mean": 0.997185789257261,
+      "diff_topic_mean": 0.9900124479335642,
+      "gap": 0.007173341323696736,
+      "n_same": 34,
+      "n_diff": 219
+    },
+    "volume": {
+      "min": 10,
+      "median": 38,
+      "max": 324,
+      "floor": 1000,
+      "short_by": 26.31578947368421
+    }
+  },
+  "style": {
+    "spread": {
+      "min": 0.9767410627174651,
+      "median": 0.9912494284418196,
+      "max": 1.0000000000000002
+    },
+    "sweep": [
+      {
+        "threshold": 0.5,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.52,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.54,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.56,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.58,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.6,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.62,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.64,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.66,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.68,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.7,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.72,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.74,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.76,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.78,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.8,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.82,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.84,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.86,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.88,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.9,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.92,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.94,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.96,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 0.98,
+        "burners": 6,
+        "false_pairs": 126
+      },
+      {
+        "threshold": 1.0,
+        "burners": 5,
+        "false_pairs": 0
+      }
+    ],
+    "admissible": []
+  },
+  "time": {
+    "spread": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 1.0000000000000002
+    },
+    "sweep": [
+      {
+        "threshold": 0.5,
+        "burners": 6,
+        "false_pairs": 43
+      },
+      {
+        "threshold": 0.52,
+        "burners": 6,
+        "false_pairs": 43
+      },
+      {
+        "threshold": 0.54,
+        "burners": 6,
+        "false_pairs": 43
+      },
+      {
+        "threshold": 0.56,
+        "burners": 6,
+        "false_pairs": 43
+      },
+      {
+        "threshold": 0.58,
+        "burners": 6,
+        "false_pairs": 43
+      },
+      {
+        "threshold": 0.6,
+        "burners": 6,
+        "false_pairs": 43
+      },
+      {
+        "threshold": 0.62,
+        "burners": 6,
+        "false_pairs": 43
+      },
+      {
+        "threshold": 0.64,
+        "burners": 6,
+        "false_pairs": 43
+      },
+      {
+        "threshold": 0.66,
+        "burners": 6,
+        "false_pairs": 43
+      },
+      {
+        "threshold": 0.68,
+        "burners": 6,
+        "false_pairs": 29
+      },
+      {
+        "threshold": 0.7,
+        "burners": 6,
+        "false_pairs": 29
+      },
+      {
+        "threshold": 0.72,
+        "burners": 6,
+        "false_pairs": 27
+      },
+      {
+        "threshold": 0.74,
+        "burners": 6,
+        "false_pairs": 27
+      },
+      {
+        "threshold": 0.76,
+        "burners": 6,
+        "false_pairs": 27
+      },
+      {
+        "threshold": 0.78,
+        "burners": 6,
+        "false_pairs": 27
+      },
+      {
+        "threshold": 0.8,
+        "burners": 6,
+        "false_pairs": 27
+      },
+      {
+        "threshold": 0.82,
+        "burners": 6,
+        "false_pairs": 21
+      },
+      {
+        "threshold": 0.84,
+        "burners": 6,
+        "false_pairs": 21
+      },
+      {
+        "threshold": 0.86,
+        "burners": 6,
+        "false_pairs": 21
+      },
+      {
+        "threshold": 0.88,
+        "burners": 6,
+        "false_pairs": 21
+      },
+      {
+        "threshold": 0.9,
+        "burners": 6,
+        "false_pairs": 21
+      },
+      {
+        "threshold": 0.92,
+        "burners": 6,
+        "false_pairs": 21
+      },
+      {
+        "threshold": 0.94,
+        "burners": 6,
+        "false_pairs": 21
+      },
+      {
+        "threshold": 0.96,
+        "burners": 6,
+        "false_pairs": 21
+      },
+      {
+        "threshold": 0.98,
+        "burners": 6,
+        "false_pairs": 21
+      },
+      {
+        "threshold": 1.0,
+        "burners": 6,
+        "false_pairs": 6
+      }
+    ],
+    "admissible": [],
+    "stagger_burners": 5
+  }
+}

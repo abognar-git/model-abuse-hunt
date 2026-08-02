@@ -1,0 +1,1218 @@
+{
+  "dataset": {
+    "accounts": 23,
+    "clusters": 2
+  },
+  "a_topic_share": {
+    "weight_topic_share_policy_definition": 0.28,
+    "weight_topic_share_hero_definition": 0.06,
+    "accounts": [
+      {
+        "account_id": "acct_RA01",
+        "label": "malicious",
+        "risk_score": 0.48,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.06,
+        "topic_share_of_risk": 0.125
+      },
+      {
+        "account_id": "acct_SK01",
+        "label": "malicious",
+        "risk_score": 0.382,
+        "hero_content_score": 0.03,
+        "policy_topic_score": 0.118,
+        "topic_share_of_risk": 0.3089
+      },
+      {
+        "account_id": "acct_CD01",
+        "label": "malicious",
+        "risk_score": 0.3583,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.225,
+        "topic_share_of_risk": 0.628
+      },
+      {
+        "account_id": "acct_LF01",
+        "label": "malicious",
+        "risk_score": 0.3267,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.148,
+        "topic_share_of_risk": 0.453
+      },
+      {
+        "account_id": "acct_LF03",
+        "label": "malicious",
+        "risk_score": 0.3267,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.148,
+        "topic_share_of_risk": 0.453
+      },
+      {
+        "account_id": "acct_LF04",
+        "label": "malicious",
+        "risk_score": 0.3267,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.148,
+        "topic_share_of_risk": 0.453
+      },
+      {
+        "account_id": "acct_LF05",
+        "label": "malicious",
+        "risk_score": 0.3267,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.148,
+        "topic_share_of_risk": 0.453
+      },
+      {
+        "account_id": "acct_NEG_detection",
+        "label": "benign",
+        "risk_score": 0.265,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.225,
+        "topic_share_of_risk": 0.8491
+      },
+      {
+        "account_id": "acct_LF02",
+        "label": "malicious",
+        "risk_score": 0.26,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.148,
+        "topic_share_of_risk": 0.5692
+      },
+      {
+        "account_id": "acct_CD02",
+        "label": "malicious",
+        "risk_score": 0.2483,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.1363,
+        "topic_share_of_risk": 0.5489
+      },
+      {
+        "account_id": "acct_NEG_trainer",
+        "label": "benign",
+        "risk_score": 0.198,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.148,
+        "topic_share_of_risk": 0.7475
+      },
+      {
+        "account_id": "acct_NEG_sre",
+        "label": "benign",
+        "risk_score": 0.16,
+        "hero_content_score": 0.0,
+        "policy_topic_score": 0.0,
+        "topic_share_of_risk": 0.0
+      },
+      {
+        "account_id": "acct_NEG_pentest",
+        "label": "benign",
+        "risk_score": 0.148,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.148,
+        "topic_share_of_risk": 1.0
+      },
+      {
+        "account_id": "acct_NEG_ctf",
+        "label": "benign",
+        "risk_score": 0.1363,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.1363,
+        "topic_share_of_risk": 1.0
+      },
+      {
+        "account_id": "acct_NEG_journalist",
+        "label": "benign",
+        "risk_score": 0.06,
+        "hero_content_score": 0.06,
+        "policy_topic_score": 0.06,
+        "topic_share_of_risk": 1.0
+      },
+      {
+        "account_id": "acct_NEG_vpncoincidence",
+        "label": "benign",
+        "risk_score": 0.048,
+        "hero_content_score": 0.0,
+        "policy_topic_score": 0.0,
+        "topic_share_of_risk": 0.0
+      },
+      {
+        "account_id": "acct_NEG_novelist",
+        "label": "benign",
+        "risk_score": 0.0,
+        "hero_content_score": 0.0,
+        "policy_topic_score": 0.0,
+        "topic_share_of_risk": 0.0
+      },
+      {
+        "account_id": "acct_BG01",
+        "label": "benign",
+        "risk_score": 0.0,
+        "hero_content_score": 0.0,
+        "policy_topic_score": 0.0,
+        "topic_share_of_risk": 0.0
+      },
+      {
+        "account_id": "acct_BG02",
+        "label": "benign",
+        "risk_score": 0.0,
+        "hero_content_score": 0.0,
+        "policy_topic_score": 0.0,
+        "topic_share_of_risk": 0.0
+      },
+      {
+        "account_id": "acct_BG03",
+        "label": "benign",
+        "risk_score": 0.0,
+        "hero_content_score": 0.0,
+        "policy_topic_score": 0.0,
+        "topic_share_of_risk": 0.0
+      },
+      {
+        "account_id": "acct_BG04",
+        "label": "benign",
+        "risk_score": 0.0,
+        "hero_content_score": 0.0,
+        "policy_topic_score": 0.0,
+        "topic_share_of_risk": 0.0
+      },
+      {
+        "account_id": "acct_BG05",
+        "label": "benign",
+        "risk_score": 0.0,
+        "hero_content_score": 0.0,
+        "policy_topic_score": 0.0,
+        "topic_share_of_risk": 0.0
+      },
+      {
+        "account_id": "acct_BG06",
+        "label": "benign",
+        "risk_score": 0.0,
+        "hero_content_score": 0.0,
+        "policy_topic_score": 0.0,
+        "topic_share_of_risk": 0.0
+      }
+    ],
+    "hard_negative_topic_shares": {
+      "acct_NEG_detection": 0.8491,
+      "acct_NEG_trainer": 0.7475,
+      "acct_NEG_sre": 0.0,
+      "acct_NEG_pentest": 1.0,
+      "acct_NEG_ctf": 1.0,
+      "acct_NEG_journalist": 1.0,
+      "acct_NEG_vpncoincidence": 0.0
+    },
+    "max_hard_negative_topic_share": 1.0
+  },
+  "b_ablation": {
+    "baseline": {
+      "malicious_leads": 8,
+      "malicious_total": 9,
+      "benign_leads": 1,
+      "benign_total": 14,
+      "malicious_surfaced": 9
+    },
+    "ablations": [
+      {
+        "signal": "capability_trajectory",
+        "weight": 0.22,
+        "topic_derived": true,
+        "malicious_leads_lost": 6,
+        "benign_leads_gained": -1,
+        "total_flips": 7,
+        "flips": [
+          {
+            "account_id": "acct_LF01",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_LF02",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_LF03",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_LF04",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_LF05",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_CD01",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_NEG_detection",
+            "label": "benign",
+            "was_lead": true,
+            "now_lead": false
+          }
+        ]
+      },
+      {
+        "signal": "burner_infra",
+        "weight": 0.16,
+        "topic_derived": false,
+        "malicious_leads_lost": 6,
+        "benign_leads_gained": 0,
+        "total_flips": 6,
+        "flips": [
+          {
+            "account_id": "acct_LF01",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_LF02",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_LF03",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_LF04",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_LF05",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_CD01",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          }
+        ]
+      },
+      {
+        "signal": "baseline_drift",
+        "weight": 0.2,
+        "topic_derived": false,
+        "malicious_leads_lost": 1,
+        "benign_leads_gained": 0,
+        "total_flips": 1,
+        "flips": [
+          {
+            "account_id": "acct_SK01",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          }
+        ]
+      },
+      {
+        "signal": "content_category_risk",
+        "weight": 0.06,
+        "topic_derived": true,
+        "malicious_leads_lost": 1,
+        "benign_leads_gained": -1,
+        "total_flips": 2,
+        "flips": [
+          {
+            "account_id": "acct_LF02",
+            "label": "malicious",
+            "was_lead": true,
+            "now_lead": false
+          },
+          {
+            "account_id": "acct_NEG_detection",
+            "label": "benign",
+            "was_lead": true,
+            "now_lead": false
+          }
+        ]
+      },
+      {
+        "signal": "automation_cadence",
+        "weight": 0.16,
+        "topic_derived": false,
+        "malicious_leads_lost": 0,
+        "benign_leads_gained": -1,
+        "total_flips": 1,
+        "flips": [
+          {
+            "account_id": "acct_NEG_detection",
+            "label": "benign",
+            "was_lead": true,
+            "now_lead": false
+          }
+        ]
+      },
+      {
+        "signal": "refusal_farming",
+        "weight": 0.1,
+        "topic_derived": false,
+        "malicious_leads_lost": 0,
+        "benign_leads_gained": 0,
+        "total_flips": 0,
+        "flips": []
+      },
+      {
+        "signal": "target_fixation",
+        "weight": 0.1,
+        "topic_derived": false,
+        "malicious_leads_lost": 0,
+        "benign_leads_gained": 0,
+        "total_flips": 0,
+        "flips": []
+      }
+    ],
+    "inert_signals": [
+      "refusal_farming",
+      "target_fixation"
+    ],
+    "inert_weight_total": 0.2
+  },
+  "c_margins": {
+    "margins": [
+      {
+        "account_id": "acct_CD02",
+        "label": "malicious",
+        "risk_score": 0.2483,
+        "distance_to_line": -0.0017
+      },
+      {
+        "account_id": "acct_LF02",
+        "label": "malicious",
+        "risk_score": 0.26,
+        "distance_to_line": 0.01
+      },
+      {
+        "account_id": "acct_NEG_detection",
+        "label": "benign",
+        "risk_score": 0.265,
+        "distance_to_line": 0.015
+      },
+      {
+        "account_id": "acct_NEG_trainer",
+        "label": "benign",
+        "risk_score": 0.198,
+        "distance_to_line": -0.052
+      },
+      {
+        "account_id": "acct_LF01",
+        "label": "malicious",
+        "risk_score": 0.3267,
+        "distance_to_line": 0.0767
+      },
+      {
+        "account_id": "acct_LF03",
+        "label": "malicious",
+        "risk_score": 0.3267,
+        "distance_to_line": 0.0767
+      },
+      {
+        "account_id": "acct_LF04",
+        "label": "malicious",
+        "risk_score": 0.3267,
+        "distance_to_line": 0.0767
+      },
+      {
+        "account_id": "acct_LF05",
+        "label": "malicious",
+        "risk_score": 0.3267,
+        "distance_to_line": 0.0767
+      },
+      {
+        "account_id": "acct_NEG_sre",
+        "label": "benign",
+        "risk_score": 0.16,
+        "distance_to_line": -0.09
+      },
+      {
+        "account_id": "acct_NEG_pentest",
+        "label": "benign",
+        "risk_score": 0.148,
+        "distance_to_line": -0.102
+      },
+      {
+        "account_id": "acct_CD01",
+        "label": "malicious",
+        "risk_score": 0.3583,
+        "distance_to_line": 0.1083
+      },
+      {
+        "account_id": "acct_NEG_ctf",
+        "label": "benign",
+        "risk_score": 0.1363,
+        "distance_to_line": -0.1137
+      },
+      {
+        "account_id": "acct_SK01",
+        "label": "malicious",
+        "risk_score": 0.382,
+        "distance_to_line": 0.132
+      },
+      {
+        "account_id": "acct_NEG_journalist",
+        "label": "benign",
+        "risk_score": 0.06,
+        "distance_to_line": -0.19
+      },
+      {
+        "account_id": "acct_NEG_vpncoincidence",
+        "label": "benign",
+        "risk_score": 0.048,
+        "distance_to_line": -0.202
+      },
+      {
+        "account_id": "acct_RA01",
+        "label": "malicious",
+        "risk_score": 0.48,
+        "distance_to_line": 0.23
+      },
+      {
+        "account_id": "acct_NEG_novelist",
+        "label": "benign",
+        "risk_score": 0.0,
+        "distance_to_line": -0.25
+      },
+      {
+        "account_id": "acct_BG01",
+        "label": "benign",
+        "risk_score": 0.0,
+        "distance_to_line": -0.25
+      },
+      {
+        "account_id": "acct_BG02",
+        "label": "benign",
+        "risk_score": 0.0,
+        "distance_to_line": -0.25
+      },
+      {
+        "account_id": "acct_BG03",
+        "label": "benign",
+        "risk_score": 0.0,
+        "distance_to_line": -0.25
+      },
+      {
+        "account_id": "acct_BG04",
+        "label": "benign",
+        "risk_score": 0.0,
+        "distance_to_line": -0.25
+      },
+      {
+        "account_id": "acct_BG05",
+        "label": "benign",
+        "risk_score": 0.0,
+        "distance_to_line": -0.25
+      },
+      {
+        "account_id": "acct_BG06",
+        "label": "benign",
+        "risk_score": 0.0,
+        "distance_to_line": -0.25
+      }
+    ],
+    "closest_account": {
+      "account_id": "acct_CD02",
+      "label": "malicious",
+      "risk_score": 0.2483,
+      "distance_to_line": -0.0017
+    },
+    "weight_perturbation": [
+      {
+        "signal": "capability_trajectory",
+        "weight": 0.22,
+        "first_flip": {
+          "pct": 3,
+          "flipped": [
+            {
+              "account_id": "acct_CD02",
+              "label": "malicious"
+            }
+          ]
+        }
+      },
+      {
+        "signal": "baseline_drift",
+        "weight": 0.2,
+        "first_flip": {
+          "pct": -67,
+          "flipped": [
+            {
+              "account_id": "acct_SK01",
+              "label": "malicious"
+            }
+          ]
+        }
+      },
+      {
+        "signal": "automation_cadence",
+        "weight": 0.16,
+        "first_flip": {
+          "pct": -38,
+          "flipped": [
+            {
+              "account_id": "acct_NEG_detection",
+              "label": "benign"
+            }
+          ]
+        }
+      },
+      {
+        "signal": "burner_infra",
+        "weight": 0.16,
+        "first_flip": {
+          "pct": 2,
+          "flipped": [
+            {
+              "account_id": "acct_CD02",
+              "label": "malicious"
+            }
+          ]
+        }
+      },
+      {
+        "signal": "refusal_farming",
+        "weight": 0.1,
+        "first_flip": null
+      },
+      {
+        "signal": "target_fixation",
+        "weight": 0.1,
+        "first_flip": null
+      },
+      {
+        "signal": "content_category_risk",
+        "weight": 0.06,
+        "first_flip": {
+          "pct": 3,
+          "flipped": [
+            {
+              "account_id": "acct_CD02",
+              "label": "malicious"
+            }
+          ]
+        }
+      }
+    ],
+    "arc_variant": {
+      "baseline": {
+        "malicious_leads": 8,
+        "malicious_total": 9,
+        "benign_leads": 1,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      "arc": {
+        "malicious_leads": 3,
+        "malicious_total": 9,
+        "benign_leads": 0,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      "changed_accounts": [
+        {
+          "account_id": "acct_SK01",
+          "label": "malicious",
+          "breadth_risk": 0.382,
+          "arc_risk": 0.294,
+          "breadth_lead": true,
+          "arc_lead": true
+        },
+        {
+          "account_id": "acct_CD01",
+          "label": "malicious",
+          "breadth_risk": 0.3583,
+          "arc_risk": 0.3033,
+          "breadth_lead": true,
+          "arc_lead": true
+        },
+        {
+          "account_id": "acct_LF01",
+          "label": "malicious",
+          "breadth_risk": 0.3267,
+          "arc_risk": 0.2387,
+          "breadth_lead": true,
+          "arc_lead": false
+        },
+        {
+          "account_id": "acct_LF03",
+          "label": "malicious",
+          "breadth_risk": 0.3267,
+          "arc_risk": 0.2387,
+          "breadth_lead": true,
+          "arc_lead": false
+        },
+        {
+          "account_id": "acct_LF04",
+          "label": "malicious",
+          "breadth_risk": 0.3267,
+          "arc_risk": 0.2387,
+          "breadth_lead": true,
+          "arc_lead": false
+        },
+        {
+          "account_id": "acct_LF05",
+          "label": "malicious",
+          "breadth_risk": 0.3267,
+          "arc_risk": 0.2387,
+          "breadth_lead": true,
+          "arc_lead": false
+        },
+        {
+          "account_id": "acct_NEG_detection",
+          "label": "benign",
+          "breadth_risk": 0.265,
+          "arc_risk": 0.1,
+          "breadth_lead": true,
+          "arc_lead": false
+        },
+        {
+          "account_id": "acct_LF02",
+          "label": "malicious",
+          "breadth_risk": 0.26,
+          "arc_risk": 0.172,
+          "breadth_lead": true,
+          "arc_lead": false
+        },
+        {
+          "account_id": "acct_CD02",
+          "label": "malicious",
+          "breadth_risk": 0.2483,
+          "arc_risk": 0.172,
+          "breadth_lead": false,
+          "arc_lead": false
+        },
+        {
+          "account_id": "acct_NEG_trainer",
+          "label": "benign",
+          "breadth_risk": 0.198,
+          "arc_risk": 0.11,
+          "breadth_lead": false,
+          "arc_lead": false
+        },
+        {
+          "account_id": "acct_NEG_pentest",
+          "label": "benign",
+          "breadth_risk": 0.148,
+          "arc_risk": 0.06,
+          "breadth_lead": false,
+          "arc_lead": false
+        },
+        {
+          "account_id": "acct_NEG_ctf",
+          "label": "benign",
+          "breadth_risk": 0.1363,
+          "arc_risk": 0.06,
+          "breadth_lead": false,
+          "arc_lead": false
+        }
+      ],
+      "malicious_leads_delta": -5,
+      "benign_leads_delta": -1
+    }
+  },
+  "d_wilson": {
+    "baseline": {
+      "malicious_leads": 8,
+      "malicious_total": 9,
+      "benign_leads": 1,
+      "benign_total": 14,
+      "malicious_surfaced": 9
+    },
+    "wilson": {
+      "malicious_leads": 3,
+      "malicious_total": 9,
+      "benign_leads": 0,
+      "benign_total": 14,
+      "malicious_surfaced": 9
+    },
+    "wilson_refusal_only": {
+      "malicious_leads": 8,
+      "malicious_total": 9,
+      "benign_leads": 1,
+      "benign_total": 14,
+      "malicious_surfaced": 9
+    },
+    "matched_operating_point": {
+      "note": "lowest-threshold configuration whose benign-lead count does not exceed the shipped one's; the fair comparison when a variant rescales every score",
+      "shipped": {
+        "malicious_leads": 8,
+        "malicious_total": 9,
+        "benign_leads": 1,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      "wilson_both": {
+        "threshold": 0.165,
+        "malicious_leads": 9,
+        "malicious_total": 9,
+        "benign_leads": 1,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      "wilson_refusal_only": {
+        "threshold": 0.2,
+        "malicious_leads": 9,
+        "malicious_total": 9,
+        "benign_leads": 1,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      }
+    },
+    "sole_refusal_corroborated": [],
+    "observation_floor": {
+      "criterion": "wilson_low(n,n) - REFUSAL_FARMING_MIN > half_width",
+      "threshold_tested": 0.2,
+      "derived_floor": 4,
+      "grid": [
+        {
+          "n": 1,
+          "wilson_low": 0.2065,
+          "half_width": 0.3967,
+          "margin_over_threshold": 0.0065,
+          "sufficient": false
+        },
+        {
+          "n": 2,
+          "wilson_low": 0.3424,
+          "half_width": 0.3288,
+          "margin_over_threshold": 0.1424,
+          "sufficient": false
+        },
+        {
+          "n": 3,
+          "wilson_low": 0.4385,
+          "half_width": 0.2807,
+          "margin_over_threshold": 0.2385,
+          "sufficient": false
+        },
+        {
+          "n": 4,
+          "wilson_low": 0.5101,
+          "half_width": 0.2449,
+          "margin_over_threshold": 0.3101,
+          "sufficient": true
+        },
+        {
+          "n": 5,
+          "wilson_low": 0.5655,
+          "half_width": 0.2172,
+          "margin_over_threshold": 0.3655,
+          "sufficient": true
+        },
+        {
+          "n": 6,
+          "wilson_low": 0.6097,
+          "half_width": 0.1952,
+          "margin_over_threshold": 0.4097,
+          "sufficient": true
+        },
+        {
+          "n": 7,
+          "wilson_low": 0.6457,
+          "half_width": 0.1772,
+          "margin_over_threshold": 0.4457,
+          "sufficient": true
+        },
+        {
+          "n": 8,
+          "wilson_low": 0.6756,
+          "half_width": 0.1622,
+          "margin_over_threshold": 0.4756,
+          "sufficient": true
+        },
+        {
+          "n": 9,
+          "wilson_low": 0.7009,
+          "half_width": 0.1496,
+          "margin_over_threshold": 0.5009,
+          "sufficient": true
+        },
+        {
+          "n": 10,
+          "wilson_low": 0.7225,
+          "half_width": 0.1388,
+          "margin_over_threshold": 0.5225,
+          "sufficient": true
+        },
+        {
+          "n": 11,
+          "wilson_low": 0.7412,
+          "half_width": 0.1294,
+          "margin_over_threshold": 0.5412,
+          "sufficient": true
+        },
+        {
+          "n": 12,
+          "wilson_low": 0.7575,
+          "half_width": 0.1212,
+          "margin_over_threshold": 0.5575,
+          "sufficient": true
+        }
+      ]
+    },
+    "thin_corroborators_disarmed": [
+      {
+        "account_id": "acct_LF01",
+        "label": "malicious",
+        "signal": "refusal_farming",
+        "n_observations": 3,
+        "contribution": 0.0667
+      },
+      {
+        "account_id": "acct_LF03",
+        "label": "malicious",
+        "signal": "refusal_farming",
+        "n_observations": 3,
+        "contribution": 0.0667
+      },
+      {
+        "account_id": "acct_LF04",
+        "label": "malicious",
+        "signal": "refusal_farming",
+        "n_observations": 3,
+        "contribution": 0.0667
+      },
+      {
+        "account_id": "acct_LF05",
+        "label": "malicious",
+        "signal": "refusal_farming",
+        "n_observations": 3,
+        "contribution": 0.0667
+      }
+    ],
+    "changed_accounts": [
+      {
+        "account_id": "acct_RA01",
+        "label": "malicious",
+        "sessions": 18,
+        "point_risk": 0.48,
+        "wilson_risk": 0.4694,
+        "point_lead": true,
+        "wilson_lead": true,
+        "point_corroborators": [
+          "automation_cadence",
+          "burner_infra",
+          "target_fixation"
+        ],
+        "wilson_corroborators": [
+          "automation_cadence",
+          "burner_infra",
+          "target_fixation"
+        ]
+      },
+      {
+        "account_id": "acct_SK01",
+        "label": "malicious",
+        "sessions": 12,
+        "point_risk": 0.382,
+        "wilson_risk": 0.3672,
+        "point_lead": true,
+        "wilson_lead": true,
+        "point_corroborators": [
+          "automation_cadence",
+          "baseline_drift"
+        ],
+        "wilson_corroborators": [
+          "automation_cadence",
+          "baseline_drift"
+        ]
+      },
+      {
+        "account_id": "acct_CD01",
+        "label": "malicious",
+        "sessions": 4,
+        "point_risk": 0.3583,
+        "wilson_risk": 0.3289,
+        "point_lead": true,
+        "wilson_lead": true,
+        "point_corroborators": [
+          "burner_infra"
+        ],
+        "wilson_corroborators": [
+          "burner_infra"
+        ]
+      },
+      {
+        "account_id": "acct_LF01",
+        "label": "malicious",
+        "sessions": 3,
+        "point_risk": 0.3267,
+        "wilson_risk": 0.2263,
+        "point_lead": true,
+        "wilson_lead": false,
+        "point_corroborators": [
+          "burner_infra",
+          "refusal_farming"
+        ],
+        "wilson_corroborators": [
+          "burner_infra"
+        ]
+      },
+      {
+        "account_id": "acct_LF03",
+        "label": "malicious",
+        "sessions": 3,
+        "point_risk": 0.3267,
+        "wilson_risk": 0.2263,
+        "point_lead": true,
+        "wilson_lead": false,
+        "point_corroborators": [
+          "burner_infra",
+          "refusal_farming"
+        ],
+        "wilson_corroborators": [
+          "burner_infra"
+        ]
+      },
+      {
+        "account_id": "acct_LF04",
+        "label": "malicious",
+        "sessions": 3,
+        "point_risk": 0.3267,
+        "wilson_risk": 0.2263,
+        "point_lead": true,
+        "wilson_lead": false,
+        "point_corroborators": [
+          "burner_infra",
+          "refusal_farming"
+        ],
+        "wilson_corroborators": [
+          "burner_infra"
+        ]
+      },
+      {
+        "account_id": "acct_LF05",
+        "label": "malicious",
+        "sessions": 3,
+        "point_risk": 0.3267,
+        "wilson_risk": 0.2263,
+        "point_lead": true,
+        "wilson_lead": false,
+        "point_corroborators": [
+          "burner_infra",
+          "refusal_farming"
+        ],
+        "wilson_corroborators": [
+          "burner_infra"
+        ]
+      },
+      {
+        "account_id": "acct_NEG_detection",
+        "label": "benign",
+        "sessions": 3,
+        "point_risk": 0.265,
+        "wilson_risk": 0.2313,
+        "point_lead": true,
+        "wilson_lead": false,
+        "point_corroborators": [],
+        "wilson_corroborators": []
+      },
+      {
+        "account_id": "acct_LF02",
+        "label": "malicious",
+        "sessions": 3,
+        "point_risk": 0.26,
+        "wilson_risk": 0.2263,
+        "point_lead": true,
+        "wilson_lead": false,
+        "point_corroborators": [
+          "burner_infra"
+        ],
+        "wilson_corroborators": [
+          "burner_infra"
+        ]
+      },
+      {
+        "account_id": "acct_CD02",
+        "label": "malicious",
+        "sessions": 2,
+        "point_risk": 0.2483,
+        "wilson_risk": 0.2088,
+        "point_lead": false,
+        "wilson_lead": false,
+        "point_corroborators": [
+          "burner_infra"
+        ],
+        "wilson_corroborators": [
+          "burner_infra"
+        ]
+      },
+      {
+        "account_id": "acct_NEG_trainer",
+        "label": "benign",
+        "sessions": 3,
+        "point_risk": 0.198,
+        "wilson_risk": 0.1643,
+        "point_lead": false,
+        "wilson_lead": false,
+        "point_corroborators": [],
+        "wilson_corroborators": []
+      },
+      {
+        "account_id": "acct_NEG_pentest",
+        "label": "benign",
+        "sessions": 3,
+        "point_risk": 0.148,
+        "wilson_risk": 0.1143,
+        "point_lead": false,
+        "wilson_lead": false,
+        "point_corroborators": [],
+        "wilson_corroborators": []
+      },
+      {
+        "account_id": "acct_NEG_ctf",
+        "label": "benign",
+        "sessions": 2,
+        "point_risk": 0.1363,
+        "wilson_risk": 0.0968,
+        "point_lead": false,
+        "wilson_lead": false,
+        "point_corroborators": [],
+        "wilson_corroborators": []
+      },
+      {
+        "account_id": "acct_NEG_journalist",
+        "label": "benign",
+        "sessions": 2,
+        "point_risk": 0.06,
+        "wilson_risk": 0.0205,
+        "point_lead": false,
+        "wilson_lead": false,
+        "point_corroborators": [],
+        "wilson_corroborators": []
+      }
+    ],
+    "session_count_median": 3,
+    "minimal_case": {
+      "description": "one session, one refusal, clean infrastructure",
+      "point_estimate": {
+        "risk": 0.2245,
+        "refusal_contribution": 0.1
+      },
+      "wilson": {
+        "risk": 0.1658,
+        "refusal_contribution": 0.0413
+      },
+      "corroboration_floor": 0.06
+    }
+  },
+  "e_threshold": {
+    "sweep": [
+      {
+        "threshold": 0.18,
+        "shipped": false,
+        "malicious_leads": 9,
+        "malicious_total": 9,
+        "benign_leads": 2,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      {
+        "threshold": 0.2,
+        "shipped": false,
+        "malicious_leads": 9,
+        "malicious_total": 9,
+        "benign_leads": 1,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      {
+        "threshold": 0.22,
+        "shipped": false,
+        "malicious_leads": 9,
+        "malicious_total": 9,
+        "benign_leads": 1,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      {
+        "threshold": 0.24,
+        "shipped": false,
+        "malicious_leads": 9,
+        "malicious_total": 9,
+        "benign_leads": 1,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      {
+        "threshold": 0.25,
+        "shipped": true,
+        "malicious_leads": 8,
+        "malicious_total": 9,
+        "benign_leads": 1,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      {
+        "threshold": 0.26,
+        "shipped": false,
+        "malicious_leads": 8,
+        "malicious_total": 9,
+        "benign_leads": 1,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      {
+        "threshold": 0.28,
+        "shipped": false,
+        "malicious_leads": 7,
+        "malicious_total": 9,
+        "benign_leads": 0,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      {
+        "threshold": 0.3,
+        "shipped": false,
+        "malicious_leads": 7,
+        "malicious_total": 9,
+        "benign_leads": 0,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      },
+      {
+        "threshold": 0.34,
+        "shipped": false,
+        "malicious_leads": 3,
+        "malicious_total": 9,
+        "benign_leads": 0,
+        "benign_total": 14,
+        "malicious_surfaced": 9
+      }
+    ],
+    "shipped": {
+      "threshold": 0.25,
+      "shipped": true,
+      "malicious_leads": 8,
+      "malicious_total": 9,
+      "benign_leads": 1,
+      "benign_total": 14,
+      "malicious_surfaced": 9
+    },
+    "dominating_thresholds": [
+      0.2,
+      0.22,
+      0.24
+    ]
+  }
+}

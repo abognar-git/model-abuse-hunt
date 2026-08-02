@@ -1,0 +1,66 @@
+{
+  "ladder": [
+    {
+      "id": "gpt-4o-mini",
+      "generation": "4o",
+      "tier": "mini",
+      "released": "2024-07",
+      "note": "the baseline every earlier finding in this repo was measured on"
+    },
+    {
+      "id": "gpt-4.1-mini",
+      "generation": "4.1",
+      "tier": "mini",
+      "released": "2025-04",
+      "note": ""
+    },
+    {
+      "id": "gpt-5-mini",
+      "generation": "5",
+      "tier": "mini",
+      "released": "2025-08",
+      "note": "first reasoning-era mini"
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "generation": "5.4",
+      "tier": "mini",
+      "released": "2026-03",
+      "note": ""
+    },
+    {
+      "id": "gpt-5.6-terra",
+      "generation": "5.6-terra",
+      "tier": "frontier",
+      "released": "2026-07",
+      "note": "frontier reference; treated as an empirical black box"
+    },
+    {
+      "id": "o4-mini",
+      "generation": "o4",
+      "tier": "reasoning",
+      "released": "2025-04",
+      "note": "reasoning-specialised reference point"
+    }
+  ],
+  "usage": {
+    "gpt-4o-mini": {
+      "calls": 23,
+      "prompt_tokens": 29358,
+      "completion_tokens": 4451,
+      "seconds": 77.08654454303905,
+      "errors": 0,
+      "error_samples": []
+    }
+  },
+  "results": {
+    "gpt-4o-mini": {
+      "brier": 0.07000000000000002,
+      "reliability": 0.04101449275362319,
+      "resolution": 0.2091997479521109,
+      "uncertainty": 0.23818525519848774,
+      "base_rate": 0.391304347826087,
+      "n": 23
+    }
+  }
+}

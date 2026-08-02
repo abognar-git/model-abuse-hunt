@@ -1,0 +1,91 @@
+{
+  "ladder": [
+    {
+      "id": "gpt-4o-mini",
+      "generation": "4o",
+      "tier": "mini",
+      "released": "2024-07",
+      "note": "the baseline every earlier finding in this repo was measured on"
+    },
+    {
+      "id": "gpt-4.1-mini",
+      "generation": "4.1",
+      "tier": "mini",
+      "released": "2025-04",
+      "note": ""
+    },
+    {
+      "id": "gpt-5-mini",
+      "generation": "5",
+      "tier": "mini",
+      "released": "2025-08",
+      "note": "first reasoning-era mini"
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "generation": "5.4",
+      "tier": "mini",
+      "released": "2026-03",
+      "note": ""
+    },
+    {
+      "id": "gpt-5.6-terra",
+      "generation": "5.6-terra",
+      "tier": "frontier",
+      "released": "2026-07",
+      "note": "frontier reference; treated as an empirical black box"
+    },
+    {
+      "id": "o4-mini",
+      "generation": "o4",
+      "tier": "reasoning",
+      "released": "2025-04",
+      "note": "reasoning-specialised reference point"
+    }
+  ],
+  "usage": {},
+  "results": {
+    "gpt-4o-mini": {
+      "trials": 9,
+      "enforcement_separated": "9/9",
+      "model_same_label": "3/9",
+      "benign_enforced": "0/9",
+      "benign_enforced_n": 0
+    },
+    "gpt-4.1-mini": {
+      "trials": 9,
+      "enforcement_separated": "9/9",
+      "model_same_label": "0/9",
+      "benign_enforced": "0/9",
+      "benign_enforced_n": 0
+    },
+    "gpt-5-mini": {
+      "trials": 9,
+      "enforcement_separated": "9/9",
+      "model_same_label": "0/9",
+      "benign_enforced": "0/9",
+      "benign_enforced_n": 0
+    },
+    "gpt-5.4-mini": {
+      "trials": 9,
+      "enforcement_separated": "9/9",
+      "model_same_label": "0/9",
+      "benign_enforced": "0/9",
+      "benign_enforced_n": 0
+    },
+    "gpt-5.6-terra": {
+      "trials": 9,
+      "enforcement_separated": "9/9",
+      "model_same_label": "0/9",
+      "benign_enforced": "0/9",
+      "benign_enforced_n": 0
+    },
+    "o4-mini": {
+      "trials": 9,
+      "enforcement_separated": "9/9",
+      "model_same_label": "0/9",
+      "benign_enforced": "0/9",
+      "benign_enforced_n": 0
+    }
+  }
+}

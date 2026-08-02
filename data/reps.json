@@ -1,0 +1,383 @@
+{
+  "model": "gpt-4o-mini",
+  "reps": 12,
+  "temperature": "API default (investigate.assess_openai pins none)",
+  "subjects": [
+    "acct_LF01,acct_LF02,acct_LF03,acct_LF04,acct_LF05",
+    "acct_CD01,acct_CD02",
+    "acct_RA01",
+    "acct_SK01",
+    "acct_NEG_detection"
+  ],
+  "per_rep": [
+    {
+      "rep": 0,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    },
+    {
+      "rep": 1,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    },
+    {
+      "rep": 2,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    },
+    {
+      "rep": 3,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    },
+    {
+      "rep": 4,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    },
+    {
+      "rep": 5,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    },
+    {
+      "rep": 6,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    },
+    {
+      "rep": 7,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    },
+    {
+      "rep": 8,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    },
+    {
+      "rep": 9,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    },
+    {
+      "rep": 10,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    },
+    {
+      "rep": 11,
+      "false_accusations": 0,
+      "malicious_enforced": 9,
+      "uncorroborated_enforcements": 0,
+      "ungated_enforcements": 0
+    }
+  ],
+  "stability": {
+    "acct_LF01,acct_LF02,acct_LF03,acct_LF04,acct_LF05": {
+      "label": "mixed/malicious",
+      "fields": {
+        "assessment": {
+          "modal": "malicious_abuse",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "malicious_abuse": 12
+          }
+        },
+        "confidence_band": {
+          "modal": "very likely",
+          "agreement": 0.583,
+          "distinct": 2,
+          "values": {
+            "almost certain": 5,
+            "very likely": 7
+          }
+        },
+        "recommended_disposition": {
+          "modal": "recommend_enforcement",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "recommend_enforcement": 12
+          }
+        },
+        "enforcement_decision": {
+          "modal": "enforce",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "enforce": 12
+          }
+        },
+        "manipulation_observed": {
+          "modal": "False",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "False": 12
+          }
+        },
+        "corroborated": {
+          "modal": "True",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "True": 12
+          }
+        }
+      }
+    },
+    "acct_CD01,acct_CD02": {
+      "label": "mixed/malicious",
+      "fields": {
+        "assessment": {
+          "modal": "malicious_abuse",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "malicious_abuse": 12
+          }
+        },
+        "confidence_band": {
+          "modal": "almost certain",
+          "agreement": 0.917,
+          "distinct": 2,
+          "values": {
+            "almost certain": 11,
+            "very likely": 1
+          }
+        },
+        "recommended_disposition": {
+          "modal": "recommend_enforcement",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "recommend_enforcement": 12
+          }
+        },
+        "enforcement_decision": {
+          "modal": "enforce",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "enforce": 12
+          }
+        },
+        "manipulation_observed": {
+          "modal": "False",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "False": 12
+          }
+        },
+        "corroborated": {
+          "modal": "True",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "True": 12
+          }
+        }
+      }
+    },
+    "acct_RA01": {
+      "label": "mixed/malicious",
+      "fields": {
+        "assessment": {
+          "modal": "malicious_abuse",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "malicious_abuse": 12
+          }
+        },
+        "confidence_band": {
+          "modal": "very likely",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "very likely": 12
+          }
+        },
+        "recommended_disposition": {
+          "modal": "recommend_enforcement",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "recommend_enforcement": 12
+          }
+        },
+        "enforcement_decision": {
+          "modal": "enforce",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "enforce": 12
+          }
+        },
+        "manipulation_observed": {
+          "modal": "False",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "False": 12
+          }
+        },
+        "corroborated": {
+          "modal": "True",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "True": 12
+          }
+        }
+      }
+    },
+    "acct_SK01": {
+      "label": "mixed/malicious",
+      "fields": {
+        "assessment": {
+          "modal": "malicious_abuse",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "malicious_abuse": 12
+          }
+        },
+        "confidence_band": {
+          "modal": "likely",
+          "agreement": 0.833,
+          "distinct": 2,
+          "values": {
+            "likely": 10,
+            "very likely": 2
+          }
+        },
+        "recommended_disposition": {
+          "modal": "recommend_enforcement",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "recommend_enforcement": 12
+          }
+        },
+        "enforcement_decision": {
+          "modal": "enforce",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "enforce": 12
+          }
+        },
+        "manipulation_observed": {
+          "modal": "False",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "False": 12
+          }
+        },
+        "corroborated": {
+          "modal": "True",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "True": 12
+          }
+        }
+      }
+    },
+    "acct_NEG_detection": {
+      "label": "benign",
+      "fields": {
+        "assessment": {
+          "modal": "malicious_abuse",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "malicious_abuse": 12
+          }
+        },
+        "confidence_band": {
+          "modal": "likely",
+          "agreement": 0.5,
+          "distinct": 2,
+          "values": {
+            "likely": 6,
+            "very likely": 6
+          }
+        },
+        "recommended_disposition": {
+          "modal": "recommend_enforcement",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "recommend_enforcement": 12
+          }
+        },
+        "enforcement_decision": {
+          "modal": "monitor",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "monitor": 12
+          }
+        },
+        "manipulation_observed": {
+          "modal": "False",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "False": 12
+          }
+        },
+        "corroborated": {
+          "modal": "False",
+          "agreement": 1.0,
+          "distinct": 1,
+          "values": {
+            "False": 12
+          }
+        }
+      }
+    }
+  },
+  "invariants": {
+    "false_accusations_worst": 0,
+    "false_accusations_mean": 0.0,
+    "false_accusations_held_every_rep": true,
+    "uncorroborated_worst": 0,
+    "ungated_worst": 0,
+    "malicious_enforced_min": 9,
+    "malicious_enforced_max": 9
+  },
+  "least_stable_field": [
+    "acct_NEG_detection",
+    "confidence_band",
+    0.5
+  ]
+}

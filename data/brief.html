@@ -1,0 +1,119 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<title>Model-abuse threat brief</title>
+<style>
+ body { font: 14px/1.5 -apple-system, Segoe UI, Roboto, sans-serif;
+        max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+ h1 { font-size: 1.5rem; margin-bottom: .2rem; }
+ .meta { color: #666; margin-bottom: 1.5rem; }
+ .card { border: 1px solid #ddd; border-radius: 8px; margin: 1rem 0;
+          padding: 0 1rem 1rem; }
+ .cardhead { display: flex; justify-content: space-between; align-items: center;
+              border-left: 5px solid; margin: 0 -1rem 0; padding: .6rem 1rem; }
+ .subjects { font-family: ui-monospace, monospace; font-weight: 600; }
+ .disp { color: #fff; font-size: .75rem; font-weight: 700; padding: .2rem .5rem;
+          border-radius: 4px; }
+ .gate { font-weight: 400; opacity: .9; }
+ .row { margin: .6rem 0; color: #333; }
+ .summary { background: #f7f7f7; padding: .6rem .8rem; border-radius: 6px; }
+ .manip { display: inline-block; background: #fff0f0; color: #b30000;
+           border: 1px solid #f3caca; padding: .2rem .5rem; border-radius: 4px;
+           font-size: .8rem; }
+ .cols { display: flex; gap: 1.5rem; margin-top: .6rem; }
+ .cols > div { flex: 1; }
+ ul { margin: .3rem 0; padding-left: 1.1rem; }
+ details { margin-top: .6rem; color: #555; }
+ summary { cursor: pointer; }
+</style></head><body>
+<h1>Model-abuse threat brief</h1>
+<div class="meta">5 investigated subject(s) &middot;
+  2 coordinated actor(s) &middot;
+  4 recommended for enforcement (all human-gated).
+  Account-derived text is escaped; no enforcement is automatic.</div>
+
+    <div class="card">
+      <div class="cardhead" style="border-color:#b30000">
+        <span class="subjects">acct_LF01, acct_LF02, acct_LF03, acct_LF04, acct_LF05</span>
+        <span class="disp" style="background:#b30000">ENFORCE - human approval required <span class="gate">requires human approval</span></span>
+      </div>
+      <div class="row"><b>Assessment</b> malicious_abuse
+        &middot; <b>Confidence</b> almost certain
+        &middot; <b>Cluster</b> 5 account(s)
+        &middot; <b>Max risk</b> 0.327</div>
+      <p class="summary">The evidence indicates a coordinated cluster of accounts engaged in generating phishing content for credential capture, with a significant number of high-risk activities observed. The behavioral signals suggest malicious intent with little to no legitimate context provided, leading to a strong recommendation for enforcement.</p>
+      
+      <div class="cols">
+        <div><b>Key evidence</b><ul><li>All accounts exhibit burner infrastructure (no phone verification, no payment method, and use of free email), higher-risk ASN, and high-risk content generation in a coordinated manner.</li><li>Behavior across accounts shows a focus on phishing content creation specifically designed for credential capture, indicating offensive intent.</li><li>Consistent risk signals across accounts, including multiple sessions in high-risk topics and a significant proportion of refusal farming.</li></ul></div>
+        <div><b>Disconfirming / would exonerate</b><ul><li>There are no indications of legitimate use cases such as penetration testing or security research based on the activities logged across the accounts.</li></ul></div>
+      </div>
+      <details><summary>policy rationale</summary><ul><li>confident assessment with behavioral/infra corroboration</li></ul></details>
+    </div>
+    <div class="card">
+      <div class="cardhead" style="border-color:#b30000">
+        <span class="subjects">acct_CD01, acct_CD02</span>
+        <span class="disp" style="background:#b30000">ENFORCE - human approval required <span class="gate">requires human approval</span></span>
+      </div>
+      <div class="row"><b>Assessment</b> malicious_abuse
+        &middot; <b>Confidence</b> almost certain
+        &middot; <b>Cluster</b> 2 account(s)
+        &middot; <b>Max risk</b> 0.358</div>
+      <p class="summary">The accounts demonstrate coordinated behavior focused on malware development, as evidenced by their activity patterns and prompt requests. The use of high-risk topics, combined with anonymous payment and infrastructure, suggests a strong likelihood of malicious intent.</p>
+      
+      <div class="cols">
+        <div><b>Key evidence</b><ul><li>Both accounts exhibit high-risk behaviors consistent with malware development, including multiple sessions on offensive tooling and high-risk content categories.</li><li>The accounts are linked by shared infrastructure characteristics, such as the same ASN and payment methods, and lack of phone verification.</li><li>The prompt excerpts indicate detailed guidance on developing malware components, which strongly suggests intent to abuse the platform for malicious purposes.</li></ul></div>
+        <div><b>Disconfirming / would exonerate</b><ul><li>There is no evidence indicating that the activity is a sanctioned security test or research initiative, nor is there a legitimate context for the requests made in the prompt excerpts.</li></ul></div>
+      </div>
+      <details><summary>policy rationale</summary><ul><li>confident assessment with behavioral/infra corroboration</li></ul></details>
+    </div>
+    <div class="card">
+      <div class="cardhead" style="border-color:#b30000">
+        <span class="subjects">acct_RA01</span>
+        <span class="disp" style="background:#b30000">ENFORCE - human approval required <span class="gate">requires human approval</span></span>
+      </div>
+      <div class="row"><b>Assessment</b> malicious_abuse
+        &middot; <b>Confidence</b> very likely
+        &middot; <b>Cluster</b> 1 account(s)
+        &middot; <b>Max risk</b> 0.48</div>
+      <p class="summary">The account behavior, including a high frequency of API calls and use of disposable infrastructure, aligns with malicious activity aimed at scraping sensitive information. The specific prompt referring to extracting data from a potentially compromised entity reinforces this assessment.</p>
+      
+      <div class="cols">
+        <div><b>Key evidence</b><ul><li>The account exhibits automation with 18 API calls on a fixed interval, suggesting scripted activity.</li><li>Usage of disposable email and prepaid card for payment indicates evasion of conventional user tracking.</li><li>The nature of the prompt requests specific employee data extraction for reconnaissance, a common precursor to phishing or targeted attacks.</li></ul></div>
+        <div><b>Disconfirming / would exonerate</b><ul><li>The account&#x27;s activity is limited to a single known target, which could suggest focused research rather than broader malicious intent.</li></ul></div>
+      </div>
+      <details><summary>policy rationale</summary><ul><li>confident assessment with behavioral/infra corroboration</li></ul></details>
+    </div>
+    <div class="card">
+      <div class="cardhead" style="border-color:#b30000">
+        <span class="subjects">acct_SK01</span>
+        <span class="disp" style="background:#b30000">ENFORCE - human approval required <span class="gate">requires human approval</span></span>
+      </div>
+      <div class="row"><b>Assessment</b> malicious_abuse
+        &middot; <b>Confidence</b> likely
+        &middot; <b>Cluster</b> 1 account(s)
+        &middot; <b>Max risk</b> 0.382</div>
+      <p class="summary">The account exhibits concerning behaviors indicative of potential malicious abuse, particularly related to spam and phishing efforts linked to cryptocurrency. Although there are some signs of legitimate usage, such as the corporate email and phone verification, the evidence of coordinating risky activity outweighs these positive signals.</p>
+      
+      <div class="cols">
+        <div><b>Key evidence</b><ul><li>Usage pattern has drifted from US to HK, suggesting potential circumvention of regional regulations.</li><li>Account has engaged in 6 sessions focusing on offensive tooling, indicating malicious intent.</li><li>12 API calls with an irregular cadence raise red flags for automated abuse.</li><li>6 out of 12 sessions involve high-risk topics associated with phishing or spam.</li></ul></div>
+        <div><b>Disconfirming / would exonerate</b><ul><li>The account has a verified corporate email and phone verification, which is generally indicative of legitimate usage.</li></ul></div>
+      </div>
+      <details><summary>policy rationale</summary><ul><li>confident assessment with behavioral/infra corroboration</li></ul></details>
+    </div>
+    <div class="card">
+      <div class="cardhead" style="border-color:#8a6d00">
+        <span class="subjects">acct_NEG_detection</span>
+        <span class="disp" style="background:#8a6d00">MONITOR</span>
+      </div>
+      <div class="row"><b>Assessment</b> malicious_abuse
+        &middot; <b>Confidence</b> likely
+        &middot; <b>Cluster</b> 1 account(s)
+        &middot; <b>Max risk</b> 0.265</div>
+      <p class="summary">The account exhibits behavior consistent with malicious abuse, including repeated sessions focusing on offensive tooling and high-risk content. The nearly fixed automation cadence indicates systematic misuse of capabilities. Despite the corporate affiliation and verification signals, the risk factors outweigh any indicators of legitimacy.</p>
+      
+      <div class="cols">
+        <div><b>Key evidence</b><ul><li>3 offensive-tooling sessions across 2 categories</li><li>3/3 sessions in high-risk topics related to malware and exploits</li><li> near-fixed automation cadence with 3 API calls at a 60-minute interval indicates a systematic approach typical of abuse rather than legitimate research.</li></ul></div>
+        <div><b>Disconfirming / would exonerate</b><ul><li>Account is corporate, with verified payment and phone details which typically suggests some legitimacy.</li><li>There is no evidence of coordinated cluster behavior, suggesting that this is an individual rather than part of a larger threat network.</li></ul></div>
+      </div>
+      <details><summary>policy rationale</summary><ul><li>no non-content corroboration - topic alone cannot action an account</li></ul></details>
+    </div>
+</body></html>

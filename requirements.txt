@@ -1,0 +1,17 @@
+openai>=1.40
+
+# Only needed to regenerate the README's figures
+# (`python -m scripts.make_figures`), which autocrops the console screenshots
+# and assembles them into the hero GIF. The import is guarded, so without it the
+# charts and screenshots still build and only the GIF is skipped — but the
+# documented command does use it, so it belongs here rather than in a comment.
+Pillow>=10.0
+
+# Local open-weight attackers (scripts/stress_adaptive.py --attackers, and
+# scripts/probe_local_attackers.py) are reached over ollama's HTTP API using only
+# the standard library - no extra Python dependency. They do require ollama
+# running locally with the models pulled:
+#   ollama pull llama3.1:8b
+#   ollama pull deepseek-r1:8b
+#   ollama pull hf.co/mlabonne/Meta-Llama-3.1-8B-Instruct-abliterated-GGUF:Q5_K_M
+# Everything else in the project runs without them.

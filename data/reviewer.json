@@ -1,0 +1,81 @@
+{
+  "model": "gpt-4o-mini",
+  "reps": 5,
+  "rows": [
+    {
+      "kind": "sound",
+      "name": "acct_LF01,acct_LF02,acct_LF03,acct_LF04,acct_LF05",
+      "decisions": {
+        "uphold": 5
+      },
+      "overturn_rate": 0.0,
+      "hard_overturn_rate": 0.0,
+      "modal": "uphold"
+    },
+    {
+      "kind": "sound",
+      "name": "acct_CD01,acct_CD02",
+      "decisions": {
+        "uphold": 5
+      },
+      "overturn_rate": 0.0,
+      "hard_overturn_rate": 0.0,
+      "modal": "uphold"
+    },
+    {
+      "kind": "sound",
+      "name": "acct_RA01",
+      "decisions": {
+        "uphold": 5
+      },
+      "overturn_rate": 0.0,
+      "hard_overturn_rate": 0.0,
+      "modal": "uphold"
+    },
+    {
+      "kind": "sound",
+      "name": "acct_SK01",
+      "decisions": {
+        "uphold": 2,
+        "overturn": 3
+      },
+      "overturn_rate": 0.6,
+      "hard_overturn_rate": 0.6,
+      "modal": "overturn"
+    },
+    {
+      "kind": "unsound",
+      "name": "detection_engineer_as_enforce",
+      "decisions": {
+        "uphold": 5
+      },
+      "overturn_rate": 0.0,
+      "hard_overturn_rate": 0.0,
+      "modal": "uphold"
+    },
+    {
+      "kind": "unsound",
+      "name": "pentester_fabricated_enforce",
+      "decisions": {
+        "overturn": 5
+      },
+      "overturn_rate": 1.0,
+      "hard_overturn_rate": 1.0,
+      "modal": "overturn"
+    },
+    {
+      "kind": "unsound",
+      "name": "framed_trainer_finding_25",
+      "decisions": {
+        "uphold": 5
+      },
+      "overturn_rate": 0.0,
+      "hard_overturn_rate": 0.0,
+      "modal": "uphold"
+    }
+  ],
+  "sound_overturn_rate": 0.15,
+  "unsound_overturn_rate": 0.333,
+  "margin": 0.183,
+  "verdict": "does not discriminate"
+}

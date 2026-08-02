@@ -1,0 +1,41 @@
+{
+  "lure_factory": {
+    "accounts": 5,
+    "baseline_risk": 0.3267,
+    "cheapest_escape_usd": null,
+    "cheapest_escape_via": null,
+    "best_free_risk": 0.26,
+    "unbuyable_reason": "still attributed to a cluster (shared victims + shared behavior)"
+  },
+  "capability_dev": {
+    "accounts": 2,
+    "baseline_risk": 0.3583,
+    "cheapest_escape_usd": 101.0,
+    "cheapest_escape_via": [
+      "clean_asn",
+      "verified_payment",
+      "phone_verified"
+    ],
+    "best_free_risk": 0.3583,
+    "unbuyable_reason": null
+  },
+  "recon_automation": {
+    "accounts": 1,
+    "baseline_risk": 0.48,
+    "cheapest_escape_usd": 100.0,
+    "cheapest_escape_via": [
+      "jitter_cadence",
+      "split_infrastructure"
+    ],
+    "best_free_risk": 0.384,
+    "unbuyable_reason": null
+  },
+  "stolen_key": {
+    "accounts": 1,
+    "baseline_risk": 0.382,
+    "cheapest_escape_usd": null,
+    "cheapest_escape_via": null,
+    "best_free_risk": 0.382,
+    "unbuyable_reason": "risk floor 0.282 stays above the 0.25 lead line"
+  }
+}

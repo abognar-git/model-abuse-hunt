@@ -1,0 +1,595 @@
+{
+  "cold_start": {
+    "curve": [
+      {
+        "sessions_seen": 1,
+        "malicious_leads": 3,
+        "benign_leads": 0,
+        "malicious_surfaced": 8,
+        "actors_recovered": 2,
+        "impure_clusters": 0,
+        "false_accusations": 0,
+        "clusters": 3
+      },
+      {
+        "sessions_seen": 2,
+        "malicious_leads": 5,
+        "benign_leads": 0,
+        "malicious_surfaced": 8,
+        "actors_recovered": 3,
+        "impure_clusters": 0,
+        "false_accusations": 0,
+        "clusters": 2
+      },
+      {
+        "sessions_seen": 3,
+        "malicious_leads": 7,
+        "benign_leads": 1,
+        "malicious_surfaced": 8,
+        "actors_recovered": 3,
+        "impure_clusters": 0,
+        "false_accusations": 0,
+        "clusters": 2
+      },
+      {
+        "sessions_seen": 4,
+        "malicious_leads": 7,
+        "benign_leads": 1,
+        "malicious_surfaced": 8,
+        "actors_recovered": 3,
+        "impure_clusters": 0,
+        "false_accusations": 0,
+        "clusters": 2
+      },
+      {
+        "sessions_seen": 6,
+        "malicious_leads": 7,
+        "benign_leads": 1,
+        "malicious_surfaced": 8,
+        "actors_recovered": 3,
+        "impure_clusters": 0,
+        "false_accusations": 0,
+        "clusters": 2
+      },
+      {
+        "sessions_seen": 8,
+        "malicious_leads": 7,
+        "benign_leads": 1,
+        "malicious_surfaced": 8,
+        "actors_recovered": 3,
+        "impure_clusters": 0,
+        "false_accusations": 0,
+        "clusters": 2
+      },
+      {
+        "sessions_seen": 12,
+        "malicious_leads": 8,
+        "benign_leads": 1,
+        "malicious_surfaced": 9,
+        "actors_recovered": 4,
+        "impure_clusters": 0,
+        "false_accusations": 0,
+        "clusters": 2
+      },
+      {
+        "sessions_seen": 18,
+        "malicious_leads": 8,
+        "benign_leads": 1,
+        "malicious_surfaced": 9,
+        "actors_recovered": 4,
+        "impure_clusters": 0,
+        "false_accusations": 0,
+        "clusters": 2
+      }
+    ],
+    "sessions_to_full_recall": 12,
+    "note": "sessions per account the platform must observe before the pipeline reaches its steady-state recall"
+  },
+  "generator_uses_randomness": false,
+  "generator_note": "scripts/generate_telemetry.py USED TO import random and call random.seed(31337) while never calling any random function; the dead seed has since been removed. The fixture is hand-authored either way, so there is nothing to re-seed and error bars have to come from perturbing the data instead",
+  "draws_per_perturbation": 20,
+  "baseline": {
+    "malicious_leads": 8,
+    "benign_leads": 1,
+    "malicious_surfaced": 9,
+    "actors_recovered": 4,
+    "impure_clusters": 0,
+    "false_accusations": 0,
+    "clusters": 2
+  },
+  "incidental": {
+    "identifier_relabel": {
+      "kind": "incidental",
+      "draws": 20,
+      "spread": {
+        "malicious_leads": {
+          "min": 8,
+          "max": 8,
+          "mean": 8,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "benign_leads": {
+          "min": 1,
+          "max": 1,
+          "mean": 1,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "malicious_surfaced": {
+          "min": 9,
+          "max": 9,
+          "mean": 9,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "actors_recovered": {
+          "min": 4,
+          "max": 4,
+          "mean": 4,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "impure_clusters": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "false_accusations": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "clusters": {
+          "min": 2,
+          "max": 2,
+          "mean": 2,
+          "stdev": 0.0,
+          "unchanged": true
+        }
+      }
+    },
+    "timing_jitter": {
+      "kind": "incidental",
+      "draws": 20,
+      "spread": {
+        "malicious_leads": {
+          "min": 8,
+          "max": 8,
+          "mean": 8,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "benign_leads": {
+          "min": 0,
+          "max": 1,
+          "mean": 0.4,
+          "stdev": 0.49,
+          "unchanged": false
+        },
+        "malicious_surfaced": {
+          "min": 9,
+          "max": 9,
+          "mean": 9,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "actors_recovered": {
+          "min": 4,
+          "max": 4,
+          "mean": 4,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "impure_clusters": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "false_accusations": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "clusters": {
+          "min": 2,
+          "max": 2,
+          "mean": 2,
+          "stdev": 0.0,
+          "unchanged": true
+        }
+      }
+    },
+    "session_order_shuffle": {
+      "kind": "incidental",
+      "draws": 20,
+      "spread": {
+        "malicious_leads": {
+          "min": 8,
+          "max": 8,
+          "mean": 8,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "benign_leads": {
+          "min": 1,
+          "max": 1,
+          "mean": 1,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "malicious_surfaced": {
+          "min": 9,
+          "max": 9,
+          "mean": 9,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "actors_recovered": {
+          "min": 4,
+          "max": 4,
+          "mean": 4,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "impure_clusters": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "false_accusations": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "clusters": {
+          "min": 2,
+          "max": 2,
+          "mean": 2,
+          "stdev": 0.0,
+          "unchanged": true
+        }
+      }
+    },
+    "session_order_shuffle_arc_scorer": {
+      "kind": "control",
+      "draws": 20,
+      "spread": {
+        "malicious_leads": {
+          "min": 1,
+          "max": 2,
+          "mean": 1.7,
+          "stdev": 0.458,
+          "unchanged": false
+        },
+        "benign_leads": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "malicious_surfaced": {
+          "min": 8,
+          "max": 8,
+          "mean": 8,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "actors_recovered": {
+          "min": 3,
+          "max": 3,
+          "mean": 3,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "impure_clusters": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "false_accusations": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "clusters": {
+          "min": 2,
+          "max": 2,
+          "mean": 2,
+          "stdev": 0.0,
+          "unchanged": true
+        }
+      },
+      "note": "same perturbation, scored with capability_arc instead of capability_trajectory"
+    }
+  },
+  "structural_dropout": [
+    {
+      "dropout": 0.0,
+      "spread": {
+        "malicious_leads": {
+          "min": 8,
+          "max": 8,
+          "mean": 8,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "benign_leads": {
+          "min": 1,
+          "max": 1,
+          "mean": 1,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "malicious_surfaced": {
+          "min": 9,
+          "max": 9,
+          "mean": 9,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "actors_recovered": {
+          "min": 4,
+          "max": 4,
+          "mean": 4,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "impure_clusters": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "false_accusations": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "clusters": {
+          "min": 2,
+          "max": 2,
+          "mean": 2,
+          "stdev": 0.0,
+          "unchanged": true
+        }
+      }
+    },
+    {
+      "dropout": 0.1,
+      "spread": {
+        "malicious_leads": {
+          "min": 5,
+          "max": 8,
+          "mean": 7.15,
+          "stdev": 0.792,
+          "unchanged": false
+        },
+        "benign_leads": {
+          "min": 0,
+          "max": 1,
+          "mean": 0.7,
+          "stdev": 0.458,
+          "unchanged": false
+        },
+        "malicious_surfaced": {
+          "min": 9,
+          "max": 9,
+          "mean": 9,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "actors_recovered": {
+          "min": 4,
+          "max": 4,
+          "mean": 4,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "impure_clusters": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "false_accusations": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "clusters": {
+          "min": 2,
+          "max": 2,
+          "mean": 2,
+          "stdev": 0.0,
+          "unchanged": true
+        }
+      }
+    },
+    {
+      "dropout": 0.2,
+      "spread": {
+        "malicious_leads": {
+          "min": 5,
+          "max": 8,
+          "mean": 6.55,
+          "stdev": 0.865,
+          "unchanged": false
+        },
+        "benign_leads": {
+          "min": 0,
+          "max": 1,
+          "mean": 0.6,
+          "stdev": 0.49,
+          "unchanged": false
+        },
+        "malicious_surfaced": {
+          "min": 8,
+          "max": 9,
+          "mean": 8.9,
+          "stdev": 0.3,
+          "unchanged": false
+        },
+        "actors_recovered": {
+          "min": 3,
+          "max": 4,
+          "mean": 3.9,
+          "stdev": 0.3,
+          "unchanged": false
+        },
+        "impure_clusters": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "false_accusations": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "clusters": {
+          "min": 2,
+          "max": 2,
+          "mean": 2,
+          "stdev": 0.0,
+          "unchanged": true
+        }
+      }
+    },
+    {
+      "dropout": 0.3,
+      "spread": {
+        "malicious_leads": {
+          "min": 4,
+          "max": 7,
+          "mean": 5.35,
+          "stdev": 0.963,
+          "unchanged": false
+        },
+        "benign_leads": {
+          "min": 0,
+          "max": 1,
+          "mean": 0.45,
+          "stdev": 0.497,
+          "unchanged": false
+        },
+        "malicious_surfaced": {
+          "min": 7,
+          "max": 9,
+          "mean": 8.45,
+          "stdev": 0.74,
+          "unchanged": false
+        },
+        "actors_recovered": {
+          "min": 2,
+          "max": 4,
+          "mean": 3.45,
+          "stdev": 0.74,
+          "unchanged": false
+        },
+        "impure_clusters": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "false_accusations": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "clusters": {
+          "min": 1,
+          "max": 2,
+          "mean": 1.85,
+          "stdev": 0.357,
+          "unchanged": false
+        }
+      }
+    },
+    {
+      "dropout": 0.5,
+      "spread": {
+        "malicious_leads": {
+          "min": 2,
+          "max": 5,
+          "mean": 3.85,
+          "stdev": 1.108,
+          "unchanged": false
+        },
+        "benign_leads": {
+          "min": 0,
+          "max": 1,
+          "mean": 0.1,
+          "stdev": 0.3,
+          "unchanged": false
+        },
+        "malicious_surfaced": {
+          "min": 5,
+          "max": 9,
+          "mean": 7.15,
+          "stdev": 1.314,
+          "unchanged": false
+        },
+        "actors_recovered": {
+          "min": 1,
+          "max": 4,
+          "mean": 2.55,
+          "stdev": 0.865,
+          "unchanged": false
+        },
+        "impure_clusters": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "false_accusations": {
+          "min": 0,
+          "max": 0,
+          "mean": 0,
+          "stdev": 0.0,
+          "unchanged": true
+        },
+        "clusters": {
+          "min": 1,
+          "max": 2,
+          "mean": 1.8,
+          "stdev": 0.4,
+          "unchanged": false
+        }
+      }
+    }
+  ]
+}
