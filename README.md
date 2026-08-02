@@ -9,6 +9,15 @@ evidence: one worked example, then a long results section written for someone
 who wants to check the numbers, then what went wrong and what this cannot show.
 Stopping after the first section is a perfectly good way to read it.</sub>
 
+> ### ▶ [Try the decision yourself](https://abognar-git.github.io/trigger-discipline/)
+>
+> **[`trigger-discipline`](https://github.com/abognar-git/trigger-discipline)**
+> is a game built on this project's own accounts. You sit where the reviewer
+> sits: the same twenty-three accounts, the same evidence, and a ban that is
+> refused unless you cite something that is not content. It runs in the browser,
+> needs nothing installed, and takes about fifteen minutes to find out whether
+> you can do what this README argues is hard.
+
 ---
 
 ## What this is, in one page
@@ -1708,11 +1717,11 @@ disables).
 
 ---
 
-## The other two
+## The other three
 
-This is one of three projects asking the same question from different angles:
+This is one of three projects asking the same question from different angles —
 **what actually happens when AI meets an adversary, measured rather than
-asserted.**
+asserted** — plus a game that puts you on the deciding end of this one.
 
 - **`hunt`** (this one) — *the platform hunting for misuse.* The hard part is
   that a criminal and a researcher type the same words, so getting it wrong
@@ -1730,6 +1739,13 @@ asserted.**
   tell a working answer from a plausible-looking broken one. All 448 attempts
   are browsable in an
   [interactive explorer](https://abognar-git.github.io/assay/explorer.html).
+
+- **[`trigger-discipline`](https://github.com/abognar-git/trigger-discipline)**
+  — *this project, from the reviewer's seat.* A browser game dealing out these
+  same accounts and asking you to ban or clear each one, with the enforcement
+  rules argued for here applied to you: no ban on content alone, a stated
+  confidence above the floor, and a false ban costing five times what a correct
+  clear earns. [Play it](https://abognar-git.github.io/trigger-discipline/).
 
 The first two share about 250 lines of code and converged on four conclusions
 independently — including **the same bug wearing two different costumes.** Both
