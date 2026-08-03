@@ -1733,12 +1733,12 @@ asserted** — plus a game that puts you on the deciding end of this one.
   a verdict, with an adversary who is already writing directly into the model's
   prompt.
 
-- **[`assay`](https://github.com/abognar-git/assay)** — *what the refusal is
+- **[`pyrite`](https://github.com/abognar-git/pyrite-assay)** — *what the refusal is
   worth.* These two study systems that catch people. That one asks what an AI
   safety control costs the person it fires on, by measuring how well anyone can
   tell a working answer from a plausible-looking broken one. All 448 attempts
   are browsable in an
-  [interactive explorer](https://abognar-git.github.io/assay/explorer.html).
+  [interactive explorer](https://abognar-git.github.io/pyrite-assay/explorer.html).
 
 - **[`trigger-discipline`](https://github.com/abognar-git/trigger-discipline)**
   — *this project, from the reviewer's seat.* A browser game dealing out these
