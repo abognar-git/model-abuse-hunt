@@ -88,15 +88,15 @@ def exp2_poisoning(accounts, sessions):
         "ts": "2026-07-15T10:00:00Z", "channel": "chatgpt",
         "category": "benign_code",
         "prompt_excerpt": "help me write an internal onboarding doc for "
-                          "acme-logistics new hires",
+                          "dunmarle-logistics new hires",
         "disposition": "completed", "src_ip": "198.51.100.30", "asn": "AS65538",
-        "country": "DE", "target_ref": "acme-logistics"}]
+        "country": "DE", "target_ref": "dunmarle-logistics"}]
 
     naive, _ = build_actors(acc, sess, strict=False)
     ni, _ = _actor_of(naive, "acct_DECOY_victim")
     strict, _ = build_actors(acc, sess, strict=True)
     si, _ = _actor_of(strict, "acct_DECOY_victim")
-    print(f"   employee names own employer 'acme-logistics'; recon actor targets it")
+    print(f"   employee names own employer 'dunmarle-logistics'; recon actor targets it")
     print(f"   naive victim-linking merges the employee: "
           f"{'YES (FALSE MERGE)' if ni else 'no'}")
     print(f"   guarded linking merges the employee:      "

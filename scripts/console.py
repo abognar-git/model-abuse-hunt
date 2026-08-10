@@ -115,9 +115,9 @@ SUBJECTS = [
             "ts": "2026-07-15T10:00:00Z", "channel": "chatgpt",
             "category": "benign_code",
             "prompt_excerpt": "help me write an internal onboarding doc for "
-                              "acme-logistics new hires",
+                              "dunmarle-logistics new hires",
             "disposition": "completed", "src_ip": "198.51.100.30", "asn": "AS65538",
-            "country": "DE", "target_ref": "acme-logistics"}]},
+            "country": "DE", "target_ref": "dunmarle-logistics"}]},
      "note": "names the recon actor's victim; naive linking would merge them"},
 ]
 

@@ -1,0 +1,20 @@
+name: gates
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Stdlib-only, self-contained on a fresh clone. Text only by design:
+      # the committed figures still need an eyeball pass after any
+      # identifier change (four of this family's six shipped incidents
+      # were image-borne).
+      - name: identifier hygiene
+        run: python3 -m scripts.check_identifiers

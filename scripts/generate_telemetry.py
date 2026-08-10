@@ -261,7 +261,7 @@ def actor_lure_factory():
     # so no real operator is cast as the villain. See src.signals.
     shared_ips = ["198.51.100.44", "198.51.100.61"]        # anon-egress stand-in
     asn = "AS64497"                                        # higher-risk stand-in
-    brands = ["northbridge-bank", "meridian-pay", "helios-post", "civictax-gov"]
+    brands = ["brindlow-bank", "quorline-pay", "helios-post", "civictax-gov"]
     langs = ["English", "German", "Spanish", "Dutch"]
     for k in range(5):
         aid = f"acct_LF{k+1:02d}"
@@ -340,9 +340,9 @@ def actor_recon_automation():
     for i in range(18):
         sess(aid, _t(6, 2 + i // 15, (i * 4) % 60), "api", "recon",
              "summarise this scraped employee record and extract role, email "
-             "pattern, and likely privileged-access indicators for acme-logistics",
+             "pattern, and likely privileged-access indicators for dunmarle-logistics",
              "completed" if i % 6 else "refused",
-             "203.0.113.77", "AS64498", "SC", target_ref="acme-logistics")
+             "203.0.113.77", "AS64498", "SC", target_ref="dunmarle-logistics")
 
 
 def actor_stolen_key():

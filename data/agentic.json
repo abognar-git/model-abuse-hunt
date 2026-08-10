@@ -21,8 +21,8 @@
         "account_history(acct_LF03)",
         "account_history(acct_LF05)",
         "accounts_by_asn(AS64497)",
-        "related_by_victim(northbridge-bank)",
-        "related_by_victim(meridian-pay)",
+        "related_by_victim(brindlow-bank)",
+        "related_by_victim(quorline-pay)",
         "related_by_victim(helios-post)"
       ],
       "summary": "Account acct_LF01 is highly likely part of a coordinated phishing operation, with multiple accounts (acct_LF02, acct_LF03, acct_LF04, acct_LF05) exhibiting similar phishing behavior and using the same infrastructure (signup IP, ASN). Observations indicate they target identical victims and employ similar phishing tactics. Manipulation attempts were noted in the self-claims from account holders."
@@ -46,8 +46,8 @@
         "account_history(acct_LF01)",
         "sessions_by_ip(198.51.100.44)",
         "accounts_by_asn(AS64497)",
-        "related_by_victim(northbridge-bank)",
-        "related_by_victim(meridian-pay)",
+        "related_by_victim(brindlow-bank)",
+        "related_by_victim(quorline-pay)",
         "related_by_victim(helios-post)",
         "account_history(acct_LF03)",
         "account_history(acct_LF05)",

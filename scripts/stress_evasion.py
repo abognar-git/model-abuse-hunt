@@ -90,7 +90,7 @@ def run():
 
     print(f"\nlead threshold is {signals.LEAD_THRESHOLD}. After buying out infra, "
           f"payment and\ncadence, the score is carried by what remains: "
-          f"target_fixation on\n'acme-logistics' and the high-risk topic. "
+          f"target_fixation on\n'dunmarle-logistics' and the high-risk topic. "
           f"Those do not go away without\nthe actor abandoning the operation's "
           f"purpose.")
     print("\nresidual blind spot, stated plainly: a patient actor who runs ONE "
