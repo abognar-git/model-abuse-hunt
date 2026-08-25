@@ -1303,10 +1303,11 @@ changes is the topic label:
   <img alt="Oracle labels versus the real regex classifier on the same 400-account population (seed 7) at the 0.25 lead line. Recall falls from 88% to 62% as the classifier misses the evasive actors, the false-accusation rate falls from 23% to 15%, and queue precision moves from 7% to 8% — only the topic label changed between the two runs." src="docs/figures/label_cost_light.svg">
 </picture>
 
-The regex under-reads the researchers' and dual-use accounts' offensive prompts,
-so their scores never fire — which quietly *lowers* the false-accusation rate.
-The same under-reading blinds the pipeline to evasive actors — which *lowers*
-recall. Nobody designed this; it fell out of where a regex happens to be wrong.
+The regex under-reads the researchers' offensive prompts, so their scores never
+fire — which quietly *lowers* the false-accusation rate: 35 of the oracle run's
+91 false accusations are researchers, and on the classifier's labels zero are,
+while the dual-use accounts stay queued under either label. The same
+under-reading blinds the pipeline to evasive actors — which *lowers* recall. Nobody designed this; it fell out of where a regex happens to be wrong.
 "Improve the classifier" is not a scalar: a classifier that read more prompts as
 offensive would recover some evasive actors and accuse more researchers in the
 same motion. Where you sit on that curve is a policy decision the topic
