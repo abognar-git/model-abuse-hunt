@@ -1415,7 +1415,10 @@ through `src.signals` at figure-build time, so they cannot drift from the code.
 Two read a **committed artifact**: `classifier_calibration` loads
 `data/calibration/confusion.json` (the ToxicChat run) and
 `wildchat_distributions` loads `data/anchor/wildchat_stats.json` — live would
-mean re-downloading two public datasets on every figure build.
+mean re-downloading two public datasets on every figure build. The finding #27
+table in the detail section is held to the same standard: `python -m
+scripts.experiment --table` emits it from the committed population, because the
+adaptive table above already proved once that a hand-transcribed table drifts.
 
 Charts ship in a light and a dark variant and follow your GitHub theme;
 the console screenshots stay dark because the tool has no light theme, and
@@ -1868,6 +1871,7 @@ python -m scripts.stress_adaptive --models all
 python -m scripts.generate_population --n 400 --prevalence 0.02 \
     --hard-fraction 0.35 --seed 7              # the committed population
 python -m scripts.experiment                   # oracle vs predicted -> data/exp/report.md
+python -m scripts.experiment --table           # the README's #27 table, emitted not typed
 python -m scripts.seed_sweep                   # seeds 0-12 -> data/exp/seed_sweep.md
 python -m scripts.check_scorer_unmodified      # the invariant: only the label changes
 

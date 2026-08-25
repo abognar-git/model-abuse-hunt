@@ -84,6 +84,9 @@ def _score_run(signals, accounts, sessions_by_acct, *, oracle: bool) -> dict:
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--exp", default=str(ROOT / "data" / "exp"))
+    p.add_argument("--table", action="store_true",
+                   help="print the README's finding #27 table from the "
+                        "committed population and exit (emitted, not typed)")
     args = p.parse_args()
 
     # The scorer is imported as shipped, never forked;
@@ -117,6 +120,23 @@ def main() -> None:
     co = _confusion(orac, truth, thr)
     rp = _rates(cp, wilson)
     ro = _rates(co, wilson)
+
+    if args.table:
+        # The README's finding #27 table, derived rather than transcribed —
+        # the adaptive table drifted once by being hand-copied
+        # (make_figures --table exists for the same reason), and this one is
+        # not allowed to repeat that. The caption names the seed the committed
+        # population was generated with; the reproduce block pins it.
+        print("| (seed 7) | oracle labels | real classifier |")
+        print("|---|---|---|")
+        print(f"| recall (actors caught) | {100*ro['recall']:.0f}% "
+              f"({co['tp']}/{ro['actors']}) | **{100*rp['recall']:.0f}% "
+              f"({cp['tp']}/{rp['actors']})** |")
+        print(f"| false-accusation rate | {100*ro['fpr']:.0f}% | "
+              f"**{100*rp['fpr']:.0f}%** |")
+        print(f"| queue precision | {100*ro['precision']:.0f}% | "
+              f"**{100*rp['precision']:.0f}%** |")
+        return
 
     L: list[str] = []
     L.append("# label-cost research run\n")
