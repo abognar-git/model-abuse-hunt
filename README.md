@@ -52,7 +52,10 @@ this project keeps finding in other people's work.
 There is a second caveat on that number, and it is the first thing worth
 attacking: the scorer never reads a prompt. It reads a topic *label* that this
 dataset supplies for free and a real platform would have to derive with an
-imperfect classifier. [What that costs the claim](#what-this-cannot-tell-you).
+imperfect classifier. What that costs the claim is now
+[measured rather than flagged](#what-an-imperfect-classifier-costs-the-claim):
+swap the free label for a real classifier's and recall falls from 88% to 62% on
+a 400-account population, with nothing else changed (finding #27).
 
 To test whether that actually works, the dataset is built as a trap. Twenty-three
 accounts: four real actors, and **eight legitimate users written specifically to
@@ -170,8 +173,17 @@ dual-use requests this project is about. Every error in that classifier
 propagates straight into a score I have measured as if the input were perfect.
 So the honest form of the thesis is narrower than the headline: *given a correct
 topic label, topic contributes little and behaviour contributes most.* Whether
-you can get a correct topic label at scale is a different problem, this project
-does not touch it, and it is upstream of everything here.
+you can get a correct topic label at scale is a different problem, and it is
+upstream of everything here.
+
+**This project puts a number on what that label costs** — [finding
+#27](#what-an-imperfect-classifier-costs-the-claim). Scoring one 400-account
+population twice, once on a clean oracle label and once on a real regex
+classifier's label (with nothing else changed), the classifier's mistakes move
+recall from 88% to 62% and shift the false-accusation rate about eight points —
+a trade nobody chose, made silently by where a classifier happens to be wrong.
+It does not remove the caveat above; it measures its size on a synthetic
+population, and the size is not small.
 
 Every number reproduces with the commands near the bottom.
 
@@ -1231,6 +1243,144 @@ its keep on open-ended questions a deterministic linker cannot express — not o
 ones it already answers. The reason to build it here was to measure the tool
 channel as an attack surface, which is the finding that transfers.
 
+---
+
+### What an imperfect classifier costs the claim
+
+Everything above grants the scorer one convenience a real platform never gets:
+it reads a clean topic *label* for every session, as though a perfect classifier
+had tagged it for free. This section removes the convenience and measures what it
+was worth. It is a **label-cost study**: a labelled population generated at any
+scale and difficulty, tagged with a real, imperfect regex classifier
+(`src/classify.py`) instead of an oracle label, and scored by *the same
+`src.signals` shipped everywhere else in this repo* — enforced by
+`scripts/check_scorer_unmodified.py`, so the only thing that changes between the
+two runs is the topic label.
+
+**The honest headline first: the direction of these results is not new.** That
+behaviour beats content and the base-rate arithmetic that sinks precision at low
+prevalence are both established — finding #1 and finding #16 already carry them,
+and the prior work is cited in the ledger below. The one measurement I could not
+find made anywhere else is what the *classifier's mistakes* cost, isolated
+cleanly by holding everything but the label fixed. That isolation is the new part;
+the rest reproduces things this project and the field already believe, now at
+scale rather than on twenty-three accounts.
+
+**Behaviour survives an imperfect classifier — but it does not survive an actor
+who evades.** On a population where every innocent is clean and every actor uses
+burner infrastructure the detector catches everyone, and that number is a lie the
+data tells you. Put just over a third of the accounts in the hard middle — actors who buy a
+clean ASN and a verified card, jitter their cadence, spread their targets, and
+phrase around the classifier — and recall falls to **62%**. Three of eight actors
+walk through, and no threshold recovers them. This is the named blind spot of
+finding #9, shown at 400 accounts rather than argued from one.
+
+**At a realistic abuse rate, the review queue is mostly innocent people.** At the
+shipped 0.25 line the detector queues about sixty-five accounts and roughly five
+are real — a precision of **8%**, a queue **92% innocent**. This is not a flaw in
+the scorer; it is the base-rate arithmetic of finding #16, now measured directly
+on a 2% population instead of extrapolated from fourteen clean accounts. You
+cannot ship it as an automated ban.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/label_prevalence_dark.svg">
+  <img alt="Precision of the lead queue against platform abuse prevalence on a log scale, over the 400-account study population. At the 39% fixture rate precision is high, but at a realistic 2% it falls into the single digits and the queue becomes about 92% innocent — the base-rate argument for keeping a human in the loop, measured at scale." src="docs/figures/label_prevalence_light.svg">
+</picture>
+
+**The classifier's errors trade recall against precision, and nobody chose the
+trade.** Score the *same* population twice — once on the real classifier's
+labels, once on the oracle labels the fixture assumed — so the only thing that
+changes is the topic label:
+
+| (seed 7) | oracle labels | real classifier |
+|---|---|---|
+| recall (actors caught) | 88% (7/8) | **62% (5/8)** |
+| false-accusation rate | 23% | **15%** |
+| queue precision | 7% | **8%** |
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/label_cost_dark.svg">
+  <img alt="Oracle labels versus the real regex classifier on the same 400-account population (seed 7) at the 0.25 lead line. Recall falls from 88% to 62% as the classifier misses the evasive actors, the false-accusation rate falls from 23% to 15%, and queue precision moves from 7% to 8% — only the topic label changed between the two runs." src="docs/figures/label_cost_light.svg">
+</picture>
+
+The regex under-reads the researchers' and dual-use accounts' offensive prompts,
+so their scores never fire — which quietly *lowers* the false-accusation rate.
+The same under-reading blinds the pipeline to evasive actors — which *lowers*
+recall. Nobody designed this; it fell out of where a regex happens to be wrong.
+"Improve the classifier" is not a scalar: a classifier that read more prompts as
+offensive would recover some evasive actors and accuse more researchers in the
+same motion. Where you sit on that curve is a policy decision the topic
+classifier is making for you, silently, unless you measure it.
+
+**Raising the line cleans the queue and does nothing for evasion — two diseases,
+one knob.** Moving the threshold to 0.45 drops false accusations from sixty to
+one while catching *exactly the same* five actors, because the three that are
+missed sit far below any threshold worth setting. And turning the difficulty off
+(`--hard-fraction 0`) snaps recall back to 100%: the gap between that run and the
+real one is the entire cost of pretending the confusion region does not exist.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/threshold_sweep_dark.svg">
+  <img alt="Operating-point curve over the 400-account population. As the lead threshold rises from 0.15 to 0.50 the false-accusation rate collapses from about 34% to 0%, but recall stays flat at 5 of 8 actors — no threshold recovers the three evasive actors. The shipped line is 0.25; the false-positive cliff is at 0.45." src="docs/figures/threshold_sweep_light.svg">
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/hard_fraction_dark.svg">
+  <img alt="Recall and false-accusation rate as the hard-fraction knob grows from 0 to 0.5. At 0 the population is linearly separable and recall is a flattering 100% with a low false-accusation rate; as hard cases are added recall falls toward 62% and false accusations rise. The reported runs use 0.35." src="docs/figures/hard_fraction_light.svg">
+</picture>
+
+**And the false accusations are the honest hard cases, not noise.** They
+concentrate in the CI/cron automation accounts (34 of 34 — machine cadence plus
+service-account infrastructure plus a benign urgent-tone marketing email the
+regex misreads as phishing, three weak signals stacking over the line) and in
+dual-use researchers. Exactly the accounts a reviewer would worry about.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/errors_by_archetype_dark.svg">
+  <img alt="False accusations and missed actors per archetype at the 0.25 lead line. The CI/cron automation accounts (34 of 34) and dual-use researchers dominate the false accusations, and the three evasive actors are the misses; ordinary benign, mobile and traveller accounts are almost entirely clean." src="docs/figures/errors_by_archetype_light.svg">
+</picture>
+
+**The synthetic result is anchored to real traffic, not asserted.** Two of the
+population's inputs — how badly the classifier errs, and what the base rates look
+like — are measured on public data rather than set by hand. Run `src/classify.py`
+over [ToxicChat](https://huggingface.co/datasets/lmsys/toxic-chat) (10,165 real
+Vicuna-demo prompts with human labels) and it reads **93.6%** of the jailbreak
+prompts as benign (191 of 204); `generate_population.py` asserts its evasive pool
+is at least that hard for the regex, so the synthetic evasion can never quietly
+become easier than reality. ToxicChat's real jailbreak prevalence there is
+**2.0%**, the same order as the 2% the study assumes rather than the fixture's
+39%. And the behavioural base rates — near-machine cadence, multi-topic accounts,
+refusals — are read off Allen AI's
+[WildChat](https://huggingface.co/datasets/allenai/WildChat-4.8M) (about 6%
+near-machine cadence, 19% multi-topic, 3% any refusal, over 10,293 hashed-IP
+pseudo-accounts). Datasets and method are documented in
+[`docs/PROVENANCE.md`](docs/PROVENANCE.md).
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/classifier_calibration_dark.svg">
+  <img alt="This repo's regex classifier over 10,165 real ToxicChat prompts with human labels reads 93.6% of jailbreak prompts as benign (191 of 204), fires offensive on only 1.9% of prompts, against a real 7.3% toxic and 2.0% jailbreak base rate — the measured basis for the evasive-actor archetype." src="docs/figures/classifier_calibration_light.svg">
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/wildchat_distributions_dark.svg">
+  <img alt="Behavioural base rates from 40,000 real WildChat conversations grouped into 10,293 hashed_ip pseudo-accounts: about 6% near-machine cadence, 19% multi-topic, near-zero country switch under this linkage, and 3% with any assistant refusal — the benign rates behind hn_automation and refusal signals; traveller country-drift is not observable this way." src="docs/figures/wildchat_distributions_light.svg">
+</picture>
+
+**What is measured and what is still modelled — the ledger.** The causal claim
+(swapping the label moves recall and precision) comes from the synthetic
+experiment, the only place with an oracle to compare against. The classifier's
+error is measured on ToxicChat, not assumed; the base rate is anchored there too;
+but the infrastructure layer — payment, phone, ASN reputation — stays synthetic,
+because that telemetry is private everywhere. That is the honest frontier, not a
+result. What is genuinely mine here is scoring one population under both label
+sources to isolate the label-error cost; the behaviour-beats-content thesis
+([*Beyond content*, npj Complexity 2026](https://www.nature.com/articles/s44260-026-00085-z)),
+the base-rate limit ([Axelsson 2000](https://users.ece.cmu.edu/~dbrumley/courses/18487-f13/docs/Axelsson_1999_The%20base-rate%20fallacy%20and%20its%20implications%20for%20the%20difficulty%20of%20intrusion%20detection.pdf)),
+and the dual-use tension ([XSTest](https://arxiv.org/pdf/2308.01263),
+[OR-Bench](https://arxiv.org/html/2405.20947v2), Anthropic's
+[Clio](https://arxiv.org/html/2412.13678v1)) are all prior work this reproduces
+one layer up, over accounts rather than prompts.
+
 ## Figures
 
 Every chart and screenshot above is generated by
@@ -1255,6 +1405,16 @@ calibration figure is half-literal by necessity rather than neglect:
 `data/calibration.json` stores the Brier decomposition but not the per-band
 table, so the bands have nowhere to be read from until the harness persists
 them.
+
+The label-cost study (finding #27) adds seven more pairs, in the same two
+provenance classes. Five are **live**: `label_cost`, `threshold_sweep`,
+`errors_by_archetype`, `hard_fraction` and `label_prevalence` assemble their
+400-account population through `scripts.generate_population` and score it
+through `src.signals` at figure-build time, so they cannot drift from the code.
+Two read a **committed artifact**: `classifier_calibration` loads
+`data/calibration/confusion.json` (the ToxicChat run) and
+`wildchat_distributions` loads `data/anchor/wildchat_stats.json` — live would
+mean re-downloading two public datasets on every figure build.
 
 Charts ship in a light and a dark variant and follow your GitHub theme;
 the console screenshots stay dark because the tool has no light theme, and
@@ -1308,6 +1468,38 @@ getting it right.
   load-bearing limitation in the project — and because the conclusion it
   actually supports (a human gate is *required* by the arithmetic, not offered
   as a nicety) is stronger than the claim it costs.
+- **The label-cost population is synthetic, and every one of its rates is a
+  property of the generator, not of any platform.** The prevalence is hand-set;
+  the archetypes are stereotypes — a CI account flagged every time is a
+  plausible hypothesis about the confusion region, not an observation of one.
+  The classifier's error rates (75% agreement on the synthetic prompts, a 93.6%
+  jailbreak under-read on ToxicChat) are facts about this regex and these
+  datasets, not industry constants. Everything upstream of the topic label — IP
+  and ASN reputation, payment, phone — is taken as ground truth, whereas in
+  production each is its own noisy classifier, so the real error budget is
+  larger than the one modelled. `--hard-fraction 0.35` is a dial: the honest
+  reading is the *shape* of the result — recall drops, precision is poor,
+  errors concentrate, the label-error trade is real — never a single decimal.
+  And the study's prompts describe intent rather than carry weaponised
+  payloads, the same hygiene as the fixture's.
+- **The study's recall is quantised in eighths, and the oracle-vs-predicted
+  delta is seed-noise.** Across thirteen seeds
+  ([`data/exp/seed_sweep.md`](data/exp/seed_sweep.md)) the predicted-label
+  numbers are steady — recall 62% in every draw, false-accusation rate
+  14.3–16.6% — while oracle recall swings 62–88% on an eight-actor denominator,
+  so the classifier's cost is 0–2 actors depending on the draw. The stable
+  findings are the predicted recall and the three evasive misses, never the
+  delta's exact size.
+- **The study's first population was separable, and I nearly reported its
+  numbers.** It gave 100% recall and an 11% false-accusation rate, both
+  artifacts of a dataset where no innocent ever looked guilty — the
+  `--hard-fraction` knob exists because the flattering version was the version
+  built first. Part of that 11% was also a bug of mine: the early generator
+  signed innocents up on `AS64496`, which `src.signals` flags as
+  bulletproof-range, so every innocent silently took a burner-infrastructure
+  hit (clean accounts now sit on `AS64500+`, still in the reserved
+  documentation range, and the current code reports 10.2% at
+  `--hard-fraction 0`).
 - **Two of my predictions were refuted** (findings #3b and #12b) and **five of my
   own measurement errors** are documented above — a harness that fabricated
   coordination, an ambiguous confidence schema, an evasion definition that
@@ -1580,6 +1772,9 @@ and then scored as the pipeline actually scores it:
 | 24 | **Every headline number came from a single run of a non-deterministic model.** No temperature is pinned, so `findings.jsonl` is one draw — and it is the file the 0/14 and 9/9 are computed from. Finding #18 already made repeat runs mandatory *for the judge*; that lesson had never been applied here. Across 12 runs: **every enforcement decision is identical, every safety property holds every time.** The decisions are solid. The **confidence is not** — on the detection engineer the confidence band is a **coin flip**, and that band is exactly what the policy's floor gates on. | `stress_reps` |
 | 25 | **Attribution can be aimed, and I first published the aiming as easier than it is.** Earlier work priced *hiding*; finding #19 showed a wrongly-merged bystander cannot get out. Neither asked whether an attacker can **pick the victim**. Running the real linking rules against every innocent account: **5 of 14 can be attached to an attacker's account**, one of them with no barrier at all. But a standalone attacker only gets the victim **queued for review — 0 of 5 reach `enforce`.** Enforcement needs the victim attached to an *existing actor cluster*, which means reproducing that actor's infrastructure. The published number was "5 of 5 reach enforce", from a harness whose attacker was a copy of a real actor and therefore dragged the victim into the five-account lure factory; both constructions are now measured separately. The 9 who are safe are the ordinary users — an account becomes linkable exactly when its main activity is offensive or recon. **Your protection is inversely proportional to how much your job resembles the thing being hunted.** [Detail ↓](#getting-someone-else-investigated-on-purpose) | `stress_framing` |
 | 26 | **The human who approves enforcement cannot see enough to catch a mistake.** Rule 1 — nothing automatic, a human approves every action — is this project's central safety claim, and the empty automatic-action region is proven. What was never checked is whether the reviewer is *able* to catch anything, since they see a summary card, not the evidence. Measured the way finding #18 taught: it **fails to tell sound recommendations from unsound ones**. The two bad cards it approved every single time are this repo's own two failure modes — the over-flagged detection engineer, and finding #25's framed innocent — while it rejected a *correct* one. It is reading a "corroborated: yes" field rather than weighing the case. **Presence, not strength, for the fourth time — now in the gate the whole safety argument rests on.** [Detail ↓](#the-human-check-that-cannot-actually-check) | `stress_reviewer` |
+| 27 | **The clean topic label the scorer reads for free is a policy lever, and here is what it costs.** Every other finding grants the scorer an oracle `category`; a real platform derives it with an imperfect classifier. Generate a 400-account population at 2% prevalence with 35% of each class in the confusion region, score it twice through the *unmodified* `src.signals` — once on the oracle label, once on the real regex classifier's — and only the topic label differs. Recall falls **88% → 62% (5/8)**; the false-accusation rate moves about **eight points**; three evasive actors walk through and no threshold recovers them. The error is not random: the regex under-reads researchers (fewer false accusations) *and* evasive actors (lower recall) at once, so "improve the classifier" is a policy choice about where to sit, made silently unless measured. This is the answer to the caveat finding #1 flags. Across seeds the classifier costs **0–2** actors ([`data/exp/seed_sweep.md`](data/exp/seed_sweep.md)). [Detail ↓](#what-an-imperfect-classifier-costs-the-claim) | `scripts.experiment`, `scripts.seed_sweep` |
+| 27b | **The classifier error is measured on real traffic, not asserted.** Run `src/classify.py` over ToxicChat (10,165 real prompts with human labels) and it reads **93.6%** of jailbreak prompts as benign (191 of 204), firing offensive on only 1.9% — against a real 2.0% jailbreak base rate, the same order as the study's 2%. `generate_population.py` asserts its evasive pool is at least that hard for the regex, so the synthetic evasion can never drift easier than the measured reality. | `scripts.calibrate_classifier` |
+| 27c | **The behavioural base rates are anchored to real ChatGPT traffic.** WildChat (10,293 hashed-IP pseudo-accounts) gives the benign rates behind the signals: **~6%** near-machine cadence, **~19%** multi-topic, **~3%** any refusal. Country-switching is ~0% under hashed-IP linkage, so the `hn_traveler` archetype is *not* validated this way and stays a synthetic hypothesis — stated rather than hidden. WildChat cannot anchor the abuse base rate (its public release is toxicity-filtered) or measure recall/precision (no payment, phone or ASN labels); it validates input distributions only. | `scripts.wildchat_anchor` |
 
 The through-line, arrived at from every direction:
 
@@ -1666,6 +1861,20 @@ python -m src.judge --judge-model gpt-4.1-mini --reps 3
 python -m scripts.stress_dual_use --models all --reps 3
 python -m src.calibration --models mini --reps 3
 python -m scripts.stress_adaptive --models all
+
+# the label-cost study (finding #27): population, experiment, seed sweep.
+# Offline, deterministic, standard-library only.
+python -m scripts.generate_population --n 400 --prevalence 0.02 \
+    --hard-fraction 0.35 --seed 7              # the committed population
+python -m scripts.experiment                   # oracle vs predicted -> data/exp/report.md
+python -m scripts.seed_sweep                   # seeds 0-12 -> data/exp/seed_sweep.md
+python -m scripts.check_scorer_unmodified      # the invariant: only the label changes
+
+# the study's real-data anchors (findings #27b, #27c) pull two public datasets
+# and need extra packages, kept out of the light core requirements on purpose
+pip install -r requirements-research.txt
+python -m scripts.calibrate_classifier         # ToxicChat -> data/calibration/ (no auth)
+python -m scripts.wildchat_anchor              # WildChat  -> data/anchor/
 
 # regenerate every figure in this README from the code and the result files
 python -m scripts.make_figures              # charts + console screenshots + GIF

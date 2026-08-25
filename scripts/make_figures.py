@@ -9,15 +9,21 @@ kinds of output:
         different places, and the difference is worth stating rather than
         flattening:
 
-          LIVE, by importing the pipeline at render time (3) --
+          LIVE, by importing the pipeline at render time (8) --
             content_vs_behavior scores all 23 accounts through `src.signals`,
             escape_surface enumerates `src.policy.apply_enforcement_policy`
-            over the harness's own input space, and prevalence calls
+            over the harness's own input space, prevalence calls
             `src.prevalence`, which recomputes the operating point from the
-            committed artifacts. None of these can drift from the code.
+            committed artifacts, and the five label-cost study figures
+            (label_cost, threshold_sweep, errors_by_archetype, hard_fraction,
+            label_prevalence) assemble their population via
+            scripts.generate_population and score it through the same
+            `src.signals` at build time. None of these can drift from the code.
 
-          FROM A COMMITTED ARTIFACT under data/ (3) -- dual_use_ladder,
-            cost_frontier and adaptive_attackers each read their own json.
+          FROM A COMMITTED ARTIFACT under data/ (5) -- dual_use_ladder,
+            cost_frontier and adaptive_attackers each read their own json;
+            classifier_calibration reads data/calibration/confusion.json and
+            wildchat_distributions reads data/anchor/wildchat_stats.json.
             These cannot drift from the artifact, but the artifact can go
             stale against the code; that has happened here before.
 
@@ -51,6 +57,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import copy
 import itertools
 import json
 import os
@@ -69,6 +76,7 @@ from src.policy import (apply_enforcement_policy,                 # noqa: E402
 from scripts.stress_enforcement_surface import CORROBORATION      # noqa: E402
 from scripts.stress_adaptive import OPTIMAL as OPTIMAL_BASKET      # noqa: E402
 from scripts.stress_adaptive import _is_evasion                    # noqa: E402
+from scripts.generate_population import assemble                   # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
@@ -1022,12 +1030,478 @@ FIGURES = {
 }
 
 
+# ------------------------------------------------- label-cost study figures
+# These come from the label-cost study (finding #27): a population assembled
+# by scripts.generate_population and scored through the same src.signals as
+# everything above. Their builders close over data computed once and render
+# per theme, so each entry is fn(signals) -> (build(C), alt) | None rather
+# than FIGURES' fn(C) -> svg; build_svgs() renders both registries.
+
+RESEARCH_DEFAULTS = dict(n=400, prevalence=0.02, dual_use_frac=0.12, seed=7)
+
+
+def _load_json(path):
+    try:
+        return json.loads(Path(path).read_text())
+    except (OSError, ValueError):
+        return None
+
+
+def _poly(pts, stroke, w=2):
+    d = " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
+    return (f'<polyline points="{d}" fill="none" stroke="{stroke}" '
+            f'stroke-width="{w}" stroke-linejoin="round"/>')
+
+
+def _research_score(signals_mod, accounts, sessions, *, oracle):
+    by: dict[str, list] = {}
+    for s in sessions:
+        by.setdefault(s["account_id"], []).append(s)
+    out = {}
+    for a in accounts:
+        sess = by.get(a["account_id"], [])
+        if oracle:
+            sess = copy.deepcopy(sess)
+            for s in sess:
+                s["category"] = s.get("category_true", s["category"])
+        out[a["account_id"]] = signals_mod.score_account(a, sess)["risk_score"]
+    return out
+
+
+def _research_confusion(scores, truth, thr):
+    tp = fp = tn = fn = 0
+    for t in truth:
+        lead = scores[t["account_id"]] >= thr
+        if t["is_actor"]:
+            tp, fn = (tp + 1, fn) if lead else (tp, fn + 1)
+        else:
+            fp, tn = (fp + 1, tn) if lead else (fp, tn + 1)
+    return tp, fp, tn, fn
+
+
+def _research_rates(tp, fp, tn, fn):
+    actors, innocents = tp + fn, fp + tn
+    return {
+        "recall": tp / actors if actors else 0.0,
+        "fpr": fp / innocents if innocents else 0.0,
+        "precision": tp / (tp + fp) if (tp + fp) else 0.0,
+        "tp": tp, "fp": fp, "tn": tn, "fn": fn,
+        "actors": actors, "innocents": innocents,
+    }
+
+
+def _research_run(signals_mod, *, hard_fraction, prevalence=None, thr=None):
+    p = dict(RESEARCH_DEFAULTS)
+    if prevalence is not None:
+        p["prevalence"] = prevalence
+    accts, sess, truth = assemble(hard_fraction=hard_fraction, **p)
+    thr = signals_mod.LEAD_THRESHOLD if thr is None else thr
+    pred = _research_score(signals_mod, accts, sess, oracle=False)
+    orac = _research_score(signals_mod, accts, sess, oracle=True)
+    return {
+        "pred_scores": pred, "orac_scores": orac, "truth": truth,
+        "pred": _research_rates(*_research_confusion(pred, truth, thr)),
+        "orac": _research_rates(*_research_confusion(orac, truth, thr)),
+    }
+
+
+def fig_label_cost(signals_mod):
+    """Finding #27's headline: oracle vs the real classifier, the trade."""
+    r = _research_run(signals_mod, hard_fraction=0.35)
+    thr = signals_mod.LEAD_THRESHOLD
+
+    def build(C):
+        W, H = 880, 430
+        b = _head(
+            "The topic label is a policy lever, not a preprocessing step",
+            f"Same 400 accounts and scorer, lead line {thr}. Only the topic label "
+            "changes: the oracle label vs the real classifier (src/classify.py).",
+            "scored live through src.signals at figure-build time", C)
+        groups = [("recall\n(actors caught)", r["orac"]["recall"], r["pred"]["recall"]),
+                  ("false-accusation\nrate", r["orac"]["fpr"], r["pred"]["fpr"]),
+                  ("queue precision\n(PPV)", r["orac"]["precision"], r["pred"]["precision"])]
+        base, top = 340, 130
+        span = top - base  # negative
+        gw = (W - 120) / len(groups)
+        for i, (label, ov, pv) in enumerate(groups):
+            gx = 70 + gw * i
+            for j, (val, col, name) in enumerate(
+                    [(ov, C["muted"], "oracle"), (pv, C["accent"], "classifier")]):
+                bx = gx + 30 + j * 78
+                h = span * val
+                b.append(_rect(bx, base + h, 60, -h, col, C, op="0.9"))
+                b.append(_t(bx + 30, base + h - 8, f"{100*val:.0f}%", 13,
+                            C["ink"], weight="700", anchor="middle", C=C))
+                b.append(_t(bx + 30, base + 18, name, 10.5, C["muted"],
+                            anchor="middle", C=C))
+            for k, ln in enumerate(label.split("\n")):
+                b.append(_t(gx + gw / 2, base + 36 + k * 15, ln, 11.5,
+                            C["ink"], anchor="middle", weight="700", C=C))
+        b.append(_line(70, base, W - 40, base, C))
+        b.append(_t(24, 108, "only the topic label changed — yet recall, false "
+                    "accusations and precision all move; it is a policy lever", 11.5,
+                    C["warn"], weight="700", C=C))
+        return _svg(W, H, "".join(b), "oracle vs classifier labels", C)
+    return build, (
+        "Oracle labels versus the real regex classifier on the same 400-account "
+        "population (seed 7) at the 0.25 lead line. Recall falls from 88% to 62% "
+        "as the classifier misses the evasive actors, the false-accusation rate "
+        "falls from 23% to 15%, and queue precision moves from 7% to 8% — only "
+        "the topic label changed between the two runs.")
+
+
+def fig_threshold_sweep(signals_mod):
+    """Raising the line cleans the queue, never finds evaders."""
+    r = _research_run(signals_mod, hard_fraction=0.35)
+    pred, truth = r["pred_scores"], r["truth"]
+    thrs = [0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50]
+    pts = []
+    for t in thrs:
+        tp, fp, tn, fn = _research_confusion(pred, truth, t)
+        rr = _research_rates(tp, fp, tn, fn)
+        pts.append((t, rr["recall"], rr["fpr"], fp, tp, rr["actors"]))
+
+    def build(C):
+        W, H = 880, 470
+        x0, x1, ytop, ybot = 90, 800, 150, 380
+        tmin, tmax = 0.15, 0.50
+
+        def X(t):
+            return x0 + (t - tmin) / (tmax - tmin) * (x1 - x0)
+
+        def Y(f):
+            return ybot - f * (ybot - ytop)
+
+        b = _head(
+            "Raising the line cleans the queue; it never finds the evaders",
+            "Every threshold on the 400-account population: false accusations "
+            "collapse as the line rises, but the actors caught never climb.",
+            "scored live through src.signals at figure-build time", C)
+        b.append(_t(24, 108, "at 0.45 the false-accusation rate falls from ~15% "
+                    "to under 1% while the same 5 of 8 actors are caught", 11.5,
+                    C["warn"], weight="700", C=C))
+        for gy in (0.0, 0.25, 0.5, 0.75, 1.0):
+            yy = Y(gy)
+            b.append(_line(x0, yy, x1, yy, C, op="0.5"))
+            b.append(_t(x0 - 10, yy + 4, f"{100*gy:.0f}%", 10.5, C["muted"],
+                        anchor="end", mono=True, C=C))
+        for t, _, _, _, _, _ in pts:
+            b.append(_t(X(t), ybot + 18, f"{t:.2f}", 10.5, C["muted"],
+                        anchor="middle", mono=True, C=C))
+        # shipped line + the cliff
+        for tv, lab, col in [(0.25, "shipped 0.25", C["accent"]),
+                             (0.45, "cliff 0.45", C["warn"])]:
+            b.append(_line(X(tv), ytop - 10, X(tv), ybot, C, stroke=col,
+                           w=1.4, dash="5 4"))
+            b.append(_t(X(tv), ytop - 16, lab, 10.5, col, anchor="middle",
+                        weight="700", C=C))
+        b.append(_poly([(X(t), Y(fpr)) for t, _, fpr, *_ in pts], C["bad"], 2.4))
+        b.append(_poly([(X(t), Y(rec)) for t, rec, *_ in pts], C["ok"], 2.4))
+        for t, rec, fpr, fp, tp, act in pts:
+            b.append(_dot(X(t), Y(fpr), 3.6, C["bad"], C))
+            b.append(_dot(X(t), Y(rec), 3.6, C["ok"], C))
+        b += _legend(x0, ybot + 48,
+                     [(C["ok"], "actors caught (recall)"),
+                      (C["bad"], "innocents wrongly queued (false-accusation rate)")], C)
+        return _svg(W, H, "".join(b), "threshold sweep", C)
+    return build, (
+        "Operating-point curve over the 400-account population. As the lead "
+        "threshold rises from 0.15 to 0.50 the false-accusation rate collapses "
+        "from ~34% to 0%, but recall stays flat at 5 of 8 actors — no threshold "
+        "recovers the three evasive actors. The shipped line is 0.25; the false-"
+        "positive cliff is at 0.45.")
+
+
+def fig_errors_by_archetype(signals_mod):
+    """Where the errors live, per archetype, at the shipped threshold."""
+    r = _research_run(signals_mod, hard_fraction=0.35)
+    pred, truth = r["pred_scores"], r["truth"]
+    thr = signals_mod.LEAD_THRESHOLD
+    from collections import Counter
+    total, fp, fn = Counter(), Counter(), Counter()
+    for t in truth:
+        a = t["archetype"]
+        total[a] += 1
+        lead = pred[t["account_id"]] >= thr
+        if t["is_actor"] and not lead:
+            fn[a] += 1
+        elif not t["is_actor"] and lead:
+            fp[a] += 1
+    order = ["hn_automation", "dual_use", "benign", "hn_researcher",
+             "hn_traveler", "hn_mobile", "actor", "actor_evasive"]
+    order = [a for a in order if a in total]
+
+    def build(C):
+        W = 880
+        row_h, y0 = 36, 150
+        H = y0 + row_h * len(order) + 60
+        b = _head(
+            "The errors are the honest hard cases, not noise",
+            f"Per archetype at lead line {thr}, on the real classifier's labels. "
+            "Red = innocents wrongly queued; amber = actors missed.",
+            "scored live through src.signals at figure-build time", C)
+        bar_x, bar_w = 250, 480
+        worst = max(max(fp[a], fn[a]) for a in order) or 1
+        for i, a in enumerate(order):
+            y = y0 + row_h * i
+            b.append(_t(bar_x - 12, y + 15, a, 12, C["ink"], anchor="end",
+                        mono=True, weight="700", C=C))
+            b.append(_t(bar_x - 12, y + 28, f"n={total[a]}", 9.5, C["muted"],
+                        anchor="end", mono=True, C=C))
+            if fp[a]:
+                w = bar_w * fp[a] / worst
+                b.append(_rect(bar_x, y + 2, w, 12, C["bad"], C, op="0.9"))
+                b.append(_t(bar_x + w + 6, y + 12, f"{fp[a]} false accusations",
+                            10.5, C["bad"], weight="700", C=C))
+            if fn[a]:
+                w = bar_w * fn[a] / worst
+                b.append(_rect(bar_x, y + 16, w, 12, C["warn"], C, op="0.9"))
+                b.append(_t(bar_x + w + 6, y + 26, f"{fn[a]} actors missed",
+                            10.5, C["warn"], weight="700", C=C))
+            if not fp[a] and not fn[a]:
+                b.append(_t(bar_x, y + 20, "clean", 10.5, C["ok"], C=C))
+        return _svg(W, H, "".join(b), "errors by archetype", C)
+    return build, (
+        "False accusations and missed actors per archetype at the 0.25 lead "
+        "line. The CI/cron automation accounts (34 of 34) and dual-use "
+        "researchers dominate the false accusations, and the three evasive "
+        "actors are the misses; ordinary benign, mobile and traveller accounts "
+        "are almost entirely clean.")
+
+
+def fig_hard_fraction(signals_mod):
+    """The confusion-region control: separable vs realistic."""
+    fracs = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5]
+    pts = []
+    for hf in fracs:
+        r = _research_run(signals_mod, hard_fraction=hf)
+        pts.append((hf, r["pred"]["recall"], r["pred"]["fpr"]))
+
+    def build(C):
+        W, H = 880, 440
+        x0, x1, ytop, ybot = 90, 800, 150, 360
+
+        def X(f):
+            return x0 + f / 0.5 * (x1 - x0)
+
+        def Y(v):
+            return ybot - v * (ybot - ytop)
+
+        b = _head(
+            "Test on a separable population and you will believe you catch everyone",
+            "Recall and false accusations as the confusion region grows "
+            "(--hard-fraction 0 to 0.5); at 0 the population is separable.",
+            "scored live through src.signals at figure-build time", C)
+        for gy in (0.0, 0.25, 0.5, 0.75, 1.0):
+            yy = Y(gy)
+            b.append(_line(x0, yy, x1, yy, C, op="0.5"))
+            b.append(_t(x0 - 10, yy + 4, f"{100*gy:.0f}%", 10.5, C["muted"],
+                        anchor="end", mono=True, C=C))
+        for hf, _, _ in pts:
+            b.append(_t(X(hf), ybot + 18, f"{hf:.1f}", 10.5, C["muted"],
+                        anchor="middle", mono=True, C=C))
+        b.append(_t((x0 + x1) / 2, ybot + 38, "--hard-fraction "
+                    "(share of each class in the confusion region)", 11,
+                    C["muted"], anchor="middle", C=C))
+        b.append(_poly([(X(f), Y(rec)) for f, rec, _ in pts], C["ok"], 2.4))
+        b.append(_poly([(X(f), Y(fpr)) for f, _, fpr in pts], C["bad"], 2.4))
+        for f, rec, fpr in pts:
+            b.append(_dot(X(f), Y(rec), 3.8, C["ok"], C))
+            b.append(_dot(X(f), Y(fpr), 3.8, C["bad"], C))
+        b.append(_line(X(0.35), ytop - 10, X(0.35), ybot, C, stroke=C["accent"],
+                       w=1.3, dash="5 4"))
+        b.append(_t(X(0.35), ytop - 16, "reported 0.35", 10.5, C["accent"],
+                    anchor="middle", weight="700", C=C))
+        b += _legend(x0, ybot + 58,
+                     [(C["ok"], "recall"),
+                      (C["bad"], "false-accusation rate")], C)
+        return _svg(W, H, "".join(b), "hard-fraction control", C)
+    return build, (
+        "Recall and false-accusation rate as --hard-fraction grows from 0 to "
+        "0.5. At 0 the population is linearly separable and recall is a "
+        "flattering 100% with a low false-accusation rate; as hard cases are "
+        "added recall falls toward 62% and false accusations rise. The reported "
+        "runs use 0.35.")
+
+
+def fig_label_prevalence(signals_mod):
+    """Base-rate on the study population: precision against prevalence.
+
+    Distinct from fig_prevalence above, which projects the 23-account fixture's
+    operating point; this one re-assembles the 400-account study population at
+    each prevalence and scores it live.
+    """
+    prevs = [0.39, 0.20, 0.10, 0.05, 0.02, 0.01, 0.005]
+    pts = []
+    for pv in prevs:
+        r = _research_run(signals_mod, hard_fraction=0.35, prevalence=pv)
+        pts.append((pv, r["pred"]["precision"], r["pred"]["recall"]))
+
+    def build(C):
+        import math
+        W, H = 880, 440
+        x0, x1, ytop, ybot = 95, 800, 150, 360
+        lo, hi = 0.005, 0.39
+
+        def X(p):
+            return x0 + (math.log10(p) - math.log10(lo)) / (
+                math.log10(hi) - math.log10(lo)) * (x1 - x0)
+
+        def Y(v):
+            return ybot - v * (ybot - ytop)
+
+        b = _head(
+            "At a realistic abuse rate the queue is mostly innocent people",
+            "Precision of the lead queue vs platform prevalence (log scale). "
+            "The fixture ran at 39%; a real platform is far rarer.",
+            "scored live through src.signals at figure-build time", C)
+        for gy in (0.0, 0.25, 0.5, 0.75, 1.0):
+            yy = Y(gy)
+            b.append(_line(x0, yy, x1, yy, C, op="0.5"))
+            b.append(_t(x0 - 10, yy + 4, f"{100*gy:.0f}%", 10.5, C["muted"],
+                        anchor="end", mono=True, C=C))
+        for pv in prevs:
+            b.append(_t(X(pv), ybot + 18,
+                        (f"{100*pv:.1f}%" if pv < 0.05 else f"{100*pv:.0f}%"),
+                        10.5, C["muted"], anchor="middle", mono=True, C=C))
+        b.append(_t((x0 + x1) / 2, ybot + 38, "platform abuse prevalence "
+                    "(fraction of accounts that are actors)", 11, C["muted"],
+                    anchor="middle", C=C))
+        b.append(_poly([(X(p), Y(prec)) for p, prec, _ in pts], C["accent"], 2.4))
+        for p, prec, _ in pts:
+            b.append(_dot(X(p), Y(prec), 3.8, C["accent"], C))
+        b.append(_line(X(0.02), ytop - 10, X(0.02), ybot, C, stroke=C["warn"],
+                       w=1.3, dash="5 4"))
+        b.append(_t(X(0.02), ytop - 16, "reported 2%", 10.5, C["warn"],
+                    anchor="middle", weight="700", C=C))
+        p2 = next(prec for p, prec, _ in pts if abs(p - 0.02) < 1e-9)
+        b.append(_t(24, 108, f"at 2% prevalence the queue is {100*(1-p2):.0f}% "
+                    "innocent — the whole argument for a human gate", 11.5,
+                    C["warn"], weight="700", C=C))
+        b += _legend(x0, ybot + 58, [(C["accent"], "queue precision (PPV)")], C)
+        return _svg(W, H, "".join(b), "prevalence vs precision", C)
+    return build, (
+        "Precision of the lead queue against platform abuse prevalence on a log "
+        "scale. At the fixture's 39% rate precision is high, but at a realistic "
+        "2% it falls into the single digits — the queue becomes ~90% innocent — "
+        "which is the base-rate argument for keeping a human in the loop.")
+
+
+def fig_classifier_calibration(signals_mod):
+    """The regex classifier measured on real ToxicChat prompts."""
+    data = _load_json(DATA / "calibration" / "confusion.json")
+    if not data:
+        return None
+    ur = data["jailbreak_under_read"]
+    fire = data["regex_fire_rate"]
+    tox = data["prevalence"]["toxic"]
+    jb = data["prevalence"]["jailbreak"]
+    jn, jm = data["jailbreak_n"], data["jailbreak_missed"]
+    rows_total = data["dataset"]["rows_total"]
+
+    def build(C):
+        W, H = 880, 330
+        b = _head(
+            "Keyword classifiers miss almost every real jailbreak",
+            f"This repo's regex (src/classify.py) over {rows_total:,} real "
+            "ToxicChat prompts with human labels — the evasive-actor archetype, "
+            "measured not asserted.",
+            "read from data/calibration/confusion.json (scripts/calibrate_classifier.py)", C)
+        b.append(_t(24, 108, f"the phrasing evasion the actor_evasive archetype is "
+                    f"calibrated to — {100*ur:.1f}% here", 11.5, C["warn"],
+                    weight="700", C=C))
+        x0, w, y = 300, 480, 150
+        b.append(_t(x0 - 12, y + 15, "jailbreak under-read", 12, C["ink"],
+                    anchor="end", mono=True, weight="700", C=C))
+        b.append(_t(x0 - 12, y + 29, f"{jm}/{jn} read benign", 9.5, C["muted"],
+                    anchor="end", mono=True, C=C))
+        b.append(_rect(x0, y, w, 24, C["line"], C, op="0.5"))
+        b.append(_rect(x0, y, w * ur, 24, C["bad"], C, op="0.9"))
+        b.append(_t(x0 + w * ur - 8, y + 17, f"{100*ur:.1f}%", 14, C["ink"],
+                    weight="700", anchor="end", C=C))
+        for i, (lab, val, col) in enumerate(
+                [("regex fires offensive", fire, C["accent"]),
+                 ("toxic prevalence", tox, C["muted"]),
+                 ("jailbreak prevalence", jb, C["muted"])]):
+            gx = 70 + i * 270
+            b.append(_t(gx, 250, f"{100*val:.1f}%", 22, col, weight="700", C=C))
+            b.append(_t(gx, 270, lab, 11, C["muted"], C=C))
+        return _svg(W, H, "".join(b), "classifier calibration on ToxicChat", C)
+    return build, (
+        f"This repo's regex classifier over {rows_total:,} real ToxicChat "
+        f"prompts with human labels: it reads {100*ur:.1f}% of jailbreak prompts "
+        f"as benign ({jm} of {jn}), fires offensive on only {100*fire:.1f}% of "
+        f"prompts, against a real {100*tox:.1f}% toxic and {100*jb:.1f}% jailbreak "
+        "base rate — the measured basis for the evasive-actor archetype.")
+
+
+def fig_wildchat_distributions(signals_mod):
+    """Real behavioural base rates from WildChat (needs the anchor run)."""
+    d = _load_json(DATA / "anchor" / "wildchat_stats.json")
+    if not d:
+        return None
+    cad, tb, rr = d["cadence_cv"], d["topic_breadth"], d["refusal_rate"]
+    rows = [("near-machine cadence (CV<0.25)", cad["frac_near_machine_lt_0_25"], "hn_automation"),
+            ("multi-topic accounts", tb["frac_multi_topic"], "topic breadth is weak"),
+            ("country switch mid-history", d["country_switch_frac"], "not visible on hashed_ip"),
+            ("any assistant refusal", rr["frac_any_refusal"], "refusal_farming")]
+
+    def build(C):
+        W, H = 880, 360
+        b = _head(
+            "Real accounts are messy: the benign base rates behind the signals",
+            f"{d['dataset']['conversations']:,} WildChat conversations grouped into "
+            f"{d['dataset']['pseudo_accounts']:,} pseudo-accounts on hashed_ip.",
+            "read from data/anchor/wildchat_stats.json (scripts/wildchat_anchor.py)", C)
+        bar_x, bar_w, y0, rh = 320, 400, 140, 46
+        for i, (lab, val, arch) in enumerate(rows):
+            y = y0 + rh * i
+            v = val or 0.0
+            b.append(_t(bar_x - 12, y + 13, lab, 11.5, C["ink"], anchor="end",
+                        mono=True, weight="700", C=C))
+            b.append(_t(bar_x - 12, y + 27, arch, 9.5, C["muted"], anchor="end",
+                        mono=True, C=C))
+            b.append(_rect(bar_x, y + 2, bar_w, 20, C["line"], C, op="0.4"))
+            b.append(_rect(bar_x, y + 2, bar_w * v, 20, C["accent"], C, op="0.85"))
+            b.append(_t(bar_x + bar_w * v + 6, y + 16, f"{100*v:.0f}%", 11.5,
+                        C["ink"], weight="700", C=C))
+        return _svg(W, H, "".join(b), "wildchat behavioural base rates", C)
+    return build, (
+        f"Behavioural base rates from {d['dataset']['conversations']:,} real "
+        f"WildChat conversations grouped into {d['dataset']['pseudo_accounts']:,} "
+        "pseudo-accounts: the share with near-machine cadence, multiple topics, a "
+        "mid-history country switch (near-zero under hashed_ip linkage), and any "
+        "assistant refusal — the benign rates behind hn_automation and refusal; "
+        "traveller country-drift is not observable this way.")
+
+
+RESEARCH_FIGURES = {
+    "label_cost": fig_label_cost,
+    "threshold_sweep": fig_threshold_sweep,
+    "errors_by_archetype": fig_errors_by_archetype,
+    "hard_fraction": fig_hard_fraction,
+    "label_prevalence": fig_label_prevalence,
+    "classifier_calibration": fig_classifier_calibration,
+    "wildchat_distributions": fig_wildchat_distributions,
+}
+
+
 def build_svgs():
     OUT.mkdir(parents=True, exist_ok=True)
     for name, fn in FIGURES.items():
         for theme, C in THEMES.items():
             p = OUT / f"{name}_{theme}.svg"
             p.write_text(fn(C), encoding="utf-8")
+            print(f"  {p.relative_to(ROOT)}  {p.stat().st_size // 1024} KB")
+    for name, fn in RESEARCH_FIGURES.items():
+        result = fn(signals)
+        if result is None:
+            print(f"! {name}: skipped (no source data yet — run its script first)")
+            continue
+        build, _alt = result
+        for theme, C in THEMES.items():
+            p = OUT / f"{name}_{theme}.svg"
+            p.write_text(build(C), encoding="utf-8")
             print(f"  {p.relative_to(ROOT)}  {p.stat().st_size // 1024} KB")
 
 

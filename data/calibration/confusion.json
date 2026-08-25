@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-08-08T17:33:45Z",
+  "dataset": {
+    "repo": "lmsys/toxic-chat",
+    "config": "toxicchat0124",
+    "revision": null,
+    "rows_total": 10165,
+    "rows_used": 10165,
+    "human_only": false
+  },
+  "prevalence": {
+    "toxic": 0.0734,
+    "jailbreak": 0.0201
+  },
+  "regex_fire_rate": 0.0193,
+  "jailbreak_under_read": 0.9363,
+  "jailbreak_n": 204,
+  "jailbreak_missed": 191,
+  "jailbreak_subset_of_toxicity": true,
+  "vs_toxicity": {
+    "tp": 22,
+    "fp": 174,
+    "fn": 724,
+    "tn": 9245,
+    "n": 10165,
+    "precision": 0.1122,
+    "recall": 0.0295,
+    "f1": 0.0467,
+    "accuracy": 0.9117
+  },
+  "regex_category_counts": {
+    "benign_code": 9684,
+    "creative_writing": 225,
+    "exploit_help": 139,
+    "translation": 60,
+    "malware_dev": 33,
+    "recon": 17,
+    "phishing_content": 7
+  }
+}

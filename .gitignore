@@ -3,3 +3,7 @@ __pycache__/
 .env
 .venv/
 venv/
+# Raw third-party datasets cached locally; only derived stats are committed.
+data/calibration/raw/
+data/anchor/raw/
+.hf_cache/

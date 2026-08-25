@@ -1,0 +1,45 @@
+{
+  "generated_at": "2026-08-08T07:11:30Z",
+  "dataset": {
+    "repo": "allenai/WildChat-1M",
+    "revision": null,
+    "conversations": 40000,
+    "pseudo_accounts": 9698,
+    "multi_session_accounts": 2883,
+    "min_sessions": 3
+  },
+  "sessions_per_account": {
+    "mean": 4.125,
+    "p50": 1,
+    "p90": 7,
+    "p99": 44,
+    "max": 795
+  },
+  "cadence_cv": {
+    "n": 2883,
+    "p10": 0.395,
+    "p50": 1.024,
+    "p90": 2.107,
+    "frac_near_machine_lt_0_25": 0.0597
+  },
+  "topic_breadth": {
+    "mean": 1.247,
+    "frac_multi_topic": 0.2008
+  },
+  "country_switch_frac": 0.0,
+  "refusal_rate": {
+    "mean": 0.0052,
+    "frac_any_refusal": 0.033
+  },
+  "toxic_conversation_frac": 0.0,
+  "topic_mix": {
+    "benign_code": 37762,
+    "exploit_help": 909,
+    "creative_writing": 494,
+    "translation": 370,
+    "malware_dev": 235,
+    "recon": 223,
+    "phishing_content": 4,
+    "spam_content": 3
+  }
+}

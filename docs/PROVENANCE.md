@@ -29,6 +29,27 @@ intent and are deliberately non-operational.
 Per S1, OpenAI has disrupted and reported **over 40 networks** since public
 threat reporting began in February 2024.
 
+## Datasets used for calibration (finding #27)
+
+The label-cost study anchors two of its synthetic population's inputs to real,
+public traffic. These are established resources, used to **calibrate rather than
+to train**, and neither is redistributed — raw downloads cache under gitignored
+`data/{calibration,anchor}/raw/` directories and only derived statistics are
+committed.
+
+| # | Dataset | What it anchors | Licence |
+|---|---|---|---|
+| D1 | [ToxicChat](https://huggingface.co/datasets/lmsys/toxic-chat) (Lin et al., [EMNLP Findings 2023](https://aclanthology.org/2023.findings-emnlp.311/)) — 10,165 real Vicuna-demo prompts with human toxicity and jailbreak labels | The regex classifier's error rate (93.6% jailbreak under-read) and the real ~2% jailbreak base rate | CC-BY-NC |
+| D2 | [WildChat-4.8M](https://huggingface.co/datasets/allenai/WildChat-4.8M) (Zhao et al., [2024](https://arxiv.org/abs/2405.01470)), with [WildChat-1M](https://huggingface.co/datasets/allenai/WildChat-1M) as a cross-check — real ChatGPT conversations with hashed-IP and geo metadata | Behavioural base rates behind the signals: near-machine cadence, topic breadth, refusals | AI2 ImpACT |
+
+What they cannot do is also part of the record: WildChat's public release is
+toxicity-filtered, so it cannot anchor the abuse base rate, and it carries no
+payment, phone or ASN labels, so it cannot measure the detector's recall or
+precision. It validates input distributions only. ToxicChat labels general
+toxicity, a broader construct than the security-abuse topics the regex targets,
+which is why the study leads with the well-posed jailbreak under-read rather
+than recall against the full toxicity label.
+
 ## Archetype → published activity
 
 ### `capability_dev` — iterative offensive-tooling development

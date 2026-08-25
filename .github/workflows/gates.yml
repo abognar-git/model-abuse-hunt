@@ -18,3 +18,7 @@ jobs:
       # were image-borne).
       - name: identifier hygiene
         run: python3 -m scripts.check_identifiers
+      # The label-cost finding is only honest if the scorer is identical
+      # across the oracle and predicted runs; this holds that line.
+      - name: scorer unmodified
+        run: python3 scripts/check_scorer_unmodified.py

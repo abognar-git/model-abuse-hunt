@@ -1,0 +1,7 @@
+# Act II real-data calibration only:
+#   scripts/calibrate_classifier.py  (ToxicChat, public)
+#   scripts/wildchat_anchor.py       (Allen AI WildChat)
+# Kept separate so the core study stays a standard-library-only clone.
+datasets>=2.19
+huggingface_hub>=0.23
+pyarrow>=15
