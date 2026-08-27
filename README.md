@@ -58,11 +58,15 @@ swap the free label for a real classifier's and recall falls from 88% to 62% on
 a 400-account population, with nothing else changed (finding #27).
 
 To test whether that actually works, the dataset is built as a trap. Twenty-three
-accounts: four real actors, and **eight legitimate users written specifically to
-look like them on content** — a penetration tester, a malware analyst, a phishing
-trainer, a competitive hacking-contest player, a journalist, and an engineer
-whose automated traffic looks exactly like a scraping bot. If topic were driving anything, every one of
-them would be accused.
+accounts: nine belonging to four real actor archetypes, and **eight legitimate
+users written specifically to be the ones you get wrong** — a penetration
+tester, a malware analyst, a phishing trainer, a competitive hacking-contest
+player, a journalist, an engineer whose automated traffic looks exactly like a
+scraping bot, a novelist, and someone who merely shares a VPN exit with an
+actor. **Five of the eight are indistinguishable on content**, in the strict
+sense that they share a content category with an actor; the last three are
+look-alikes on cadence and infrastructure instead. If topic were driving
+anything, those five would all be accused.
 
 **The number that matters is not how many bad accounts it catches. It is how
 often it accuses someone innocent** — because the cost of the two errors is not
@@ -761,8 +765,14 @@ EXP-3  innocent bystander falsely merged into the lure factory     -> PARTIAL
 
 The cover story fails on this path too, so rule 4 is not bypassed by resubmitting
 it as an appeal. The bought identity rebuts exactly what money buys and nothing
-else — the same signals `cost_frontier` found unbuyable are the ones that survive
-an appeal, which is the frontier result arriving from the opposite direction.
+else. For two of the four actors the frontier result arrives from the opposite
+direction: `coordination` (lure factory) and `baseline_drift` (stolen key) are
+the two `cost_frontier` cannot price at any figure, and they are the two
+`appeal.py` lists as unrebuttable. It does **not** generalise to the actor in
+EXP-2 above: `cost_frontier` prices the recon actor's whole escape at $100 and
+calls cadence free to shed, and the ledger below scores that actor 3/3
+rebuttable. What survived its appeal survived because it filed only two claim
+kinds, not because those signals are unanswerable.
 
 And then the case that matters. A bystander wrongly linked into an actor cannot
 appeal out, because **coordination is not a fact you can produce a document
@@ -932,11 +942,13 @@ verdict.
 The control is the obvious one, and it took a reader's question to prompt it.
 Build the attacker as a *standalone* account — burner infrastructure, prepaid
 card, no verified phone, carrying only the tokens needed to link — and every one
-of the five victims is merged and then stops at **`gather_more`**. Three
-attacker profiles were tried, from a fully verified clean account to a bare
-burner. None reached `enforce`. Both constructions now run in
-`stress_framing.py` and both columns are reported, so the two can no longer be
-published as one number.
+of the five victims is merged and then stops at **`gather_more`**. Two
+constructions were tried — the standalone burner above and the original
+actor_clone, kept as an upper bound — and `stress_framing.py` builds exactly
+those two. Neither reached `enforce`. Both columns are
+reported, so the two can no longer be published as one number. (This said "three attacker
+profiles" until it was checked against `stress_framing.py`, which builds two:
+`standalone` and `actor_clone`.)
 
 So the honest shape is two findings rather than one:
 
@@ -1142,7 +1154,7 @@ of all 64 baskets. The frontier was right — $26 leaves risk at 0.294, above th
 definition in one place, and the control, the frontier and the adaptive harness
 all agree on $101.
 
-Four self-inflicted measurement errors in this project now, all found the same
+Five self-inflicted measurement errors in this project now, all found the same
 way: by cross-checking one instrument against another rather than trusting a
 single number. That is the argument for building redundant instruments even when
 they look duplicative. The fourth is the sharpest, because the fix was already in
@@ -1331,10 +1343,13 @@ real one is the entire cost of pretending the confusion region does not exist.
 </picture>
 
 **And the false accusations are the honest hard cases, not noise.** They
-concentrate in the CI/cron automation accounts (34 of 34 — machine cadence plus
-service-account infrastructure plus a benign urgent-tone marketing email the
-regex misreads as phishing, three weak signals stacking over the line) and in
-dual-use researchers. Exactly the accounts a reviewer would worry about.
+concentrate in the CI/cron automation accounts (34 of 34) and in dual-use
+researchers. The mechanism is machine cadence plus service-account
+infrastructure; **24 of the 34** also carry a benign urgent-tone marketing
+email that the classifier reads as phishing, a third weak signal stacking on
+top. The other **ten cross the line without it**, which is the sharper half:
+the misread makes the case worse but is not what puts them in the queue.
+Either way, exactly the accounts a reviewer would worry about.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/figures/errors_by_archetype_dark.svg">
@@ -1504,7 +1519,8 @@ getting it right.
   hit (clean accounts now sit on `AS64500+`, still in the reserved
   documentation range, and the current code reports 10.2% at
   `--hard-fraction 0`).
-- **Two of my predictions were refuted** (findings #3b and #12b) and **five of my
+- **Four of my predictions were refuted** (findings #3b, #12b, and #17, where
+  both halves of one prediction failed) and **five of my
   own measurement errors** are documented above — a harness that fabricated
   coordination, an ambiguous confidence schema, an evasion definition that
   counted downgrades as escapes, a committed adaptive artifact that predated the
@@ -1766,7 +1782,7 @@ and then scored as the pipeline actually scores it:
 | 16 | **The headline number of this repo does not survive its own base rate — and saying so is the finding.** "0 of 14 false accusations" is not a rate of zero; on 14 benign accounts the 95% upper bound is **0.215** (Wilson, and 3/14 = 0.214 by the rule of three — two derivations agreeing). At the dataset's 39% prevalence that hardly matters. At a plausible platform prevalence of **0.1%**, the same measurement is consistent with an enforce queue that is **99.7% innocent people**, because the false-positive rate multiplies a benign population a thousand times larger than the actor population. To bound the rate below 0.01% would take **30,000** cleanly-cleared benign accounts; this dataset has 14. **The result is not that the pipeline is bad — it is that no achievable model improvement fixes a base-rate problem, which is precisely the arithmetic case for policy rule 1: a human gate is not a courtesy, it is what the prevalence requires.** | `src.prevalence` |
 | 17 | **The last attribution gap is closable, and neither channel that closes it is admissible — including the one I expected to work.** Attribution misses a burner that changes *both* infrastructure and topic (5/6 in `stress_decomposition`). I predicted stylometry would close it while re-introducing false merges, on the grounds that prose similarity is really content similarity. **That prediction was wrong twice over.** The function-word features are *not* topic-contaminated (same-topic vs different-topic similarity differs by **+0.007**) — but they have no resolution at all: every pair of the 23 accounts scores between **0.977 and 1.000**, because the median account holds **38 words** of prompt text against an authorship-attribution floor around 1,000. Any threshold that closes the gap collapses the entire dataset into one cluster: **126 falsely accused pairs**. Timing *does* have resolution and *does* close the gap 6/6 — and false-merges at **every** threshold — never fewer than **6** innocent pairs at the tightest setting and as many as **43** as it loosens — and both hard negatives the dataset planted to be behaviorally identical (the detection engineer into the lure factory, the SRE into the recon bot) are swept up every time. It is also an artifact: stagger the six burners across the day instead of six consecutive minutes and it drops back to 5/6. **No admissible operating point exists on either channel.** | `stress_linkage` |
 | 18 | **The "robust next step" this README promised does not work, and the control is what shows it.** An LLM-as-judge scoring assessments against a five-criterion rubric was supposed to catch the investigator's known error (calling a legitimate detection engineer `malicious_abuse`). Measured as *discrimination* rather than detection — does it flag the wrong assessment harder than the four right ones? — `gpt-4o-mini` gives a margin of **+0.3** over 3 reps: noise. Decorrelating with a different judge model makes it **worse, not better**: `gpt-4.1-mini` scores the erroneous assessment **0 failures in 3 of 3 reps** and rates it `sound`. It flags **three of the four** genuine actors and rates the fourth — the five-account lure factory, the largest planted operation here — `sound` with 0.0 failures, byte-identically to the innocent account. Margin **−0.8**: a reviewer following it is pointed at the one legitimate user in the set and waved past the biggest actor in it. Two of the five criteria fail on *every* assessment, sound and unsound alike, so they measure the investigator's output format rather than its soundness. A single rep swung between +0.75 and +2.0 before reps were added. | `src.judge` |
-| 19 | **The appeal path is where rule 4 collides with due process — and the collision names who cannot get out.** A human-gated queue that can only ever confirm is not a check, so enforcement needs a reversal path; but an appeal *is* a self-claim, which rule 4 declares inert. The resolution is that an appeal nominates a *fact for independent verification* rather than asserting a conclusion, and only the verified fact moves anything. Measured: all **4/4** actors appealing with a cover story are upheld; the recon actor who *buys* the $101 basket rebuts `burner_infra` and nothing else, because the signals the cost frontier found unbuyable are the same ones an appeal cannot answer. And the case that matters: an innocent bystander falsely merged into the lure factory **cannot appeal out at all** — `coordination` is not a fact you can produce a document against. **The evidence that makes this pipeline hard to evade is the same evidence that makes a mistake hard to undo, and it does not check whose side it is on.** | `stress_appeal` |
+| 19 | **The appeal path is where rule 4 collides with due process — and the collision names who cannot get out.** A human-gated queue that can only ever confirm is not a check, so enforcement needs a reversal path; but an appeal *is* a self-claim, which rule 4 declares inert. The resolution is that an appeal nominates a *fact for independent verification* rather than asserting a conclusion, and only the verified fact moves anything. Measured: all **4/4** actors appealing with a cover story are upheld; the recon actor who *buys* the $101 basket rebuts `burner_infra` and nothing else — because it filed only the two claim kinds money supports, not because the rest is unanswerable: the ledger scores that actor 3/3 rebuttable. The frontier/appeal correspondence holds where it is load-bearing, on `coordination` and `baseline_drift`, the two signals no basket can buy off. And the case that matters: an innocent bystander falsely merged into the lure factory **cannot appeal out at all** — `coordination` is not a fact you can produce a document against. **The evidence that makes this pipeline hard to evade is the same evidence that makes a mistake hard to undo, and it does not check whose side it is on.** | `stress_appeal` |
 | 20 | **The headline claim depended on which file you read.** This README says topic is 0.06 of the risk score. `policy.py` says topic is `content_category_risk` **plus** `capability_trajectory` — and that second one is 0.22, the largest weight in the model. So topic is either **0.06 or 0.28**, and both definitions ship in this repo. The code breaks the tie: `capability_trajectory` reads no timestamp, so it measures topic *breadth*, not behaviour over time. It is not decorative either — removing it costs **6 of the 8** malicious leads. The five hard negatives whose content mirrors an actor get **75–100%** of their risk from topic (the other three draw none, which is the thesis working); the detection engineer, this repo's showcase example, **85%**. [Detail ↓](#the-headline-number-had-two-different-definitions) | `stress_sensitivity` |
 | 20b | **So I built the version the name promises — and my own dataset refuted the idea behind it.** An ordered arc that really tracks escalation over time fires on the one actor that genuinely develops capability, and correctly ignores every legitimate lookalike (benign leads 1 → 0). But it also loses 5 detections, because **3 of the 4 planted actors never escalate at all**: they repeat one thing at scale. Most model abuse is industrialised repetition, and the escalation-arc idea does not describe it. Measured, published, **not adopted** — 23 accounts cannot validate a new ranking scheme. | `stress_sensitivity` |
 | 20c | **The scores sit far closer to the decision line than any published number suggests.** One actor is **0.002** below the lead line; **2%** on `burner_infra` flips it, and **3%** on either of two others does. Three different thresholds beat the shipped one on this data — **deliberately not applied**, because tuning a threshold on the same 23 accounts you report results over is textbook overfitting. Separately: two of the seven signals, together **0.20 of the model**, change nothing under any perturbation. Functionally there are five signals, not seven. | `stress_sensitivity` |

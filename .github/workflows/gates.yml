@@ -22,3 +22,10 @@ jobs:
       # across the oracle and predicted runs; this holds that line.
       - name: scorer unmodified
         run: python3 scripts/check_scorer_unmodified.py
+      # Both gates above guard the data. Nothing guarded the prose, and the
+      # prose is where the claims are read: four counts had drifted off the
+      # artifacts they describe, one of them into a sibling repo that took
+      # its framing from here. Every number this checks is re-derived from
+      # data/ or scripts/, never from a second copy of the sentence.
+      - name: README matches the artifacts
+        run: python3 scripts/check_readme.py
