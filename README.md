@@ -12,11 +12,13 @@ Stopping after the first section is a perfectly good way to read it.</sub>
 > ### ▶ [Try the decision yourself](https://abognar-git.github.io/trigger-discipline/)
 >
 > **[`trigger-discipline`](https://github.com/abognar-git/trigger-discipline)**
-> is a game built on this project's own accounts. You sit where the reviewer
-> sits: the same twenty-three accounts, the same evidence, and a ban that is
-> refused unless you cite something that is not content. It runs in the browser,
-> needs nothing installed, and takes about fifteen minutes to find out whether
-> you can do what this README argues is hard.
+> is the same argument in the form prose cannot deliver. You sit where the
+> reviewer sits: the same twenty-three accounts, the same evidence, and a ban
+> that is refused unless you cite something that is not content. It imports this
+> project's scorer, linker, confidence bands and policy constants from source
+> rather than restating them, so the two cannot drift apart. This README argues
+> that the job is hard; that runs in a browser and takes about fifteen minutes
+> to show you whether you can do it.
 
 ---
 
