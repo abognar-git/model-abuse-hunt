@@ -35,9 +35,11 @@ behavioral token to match, so rule (b) can never be satisfied against them.
 Protection here is inversely proportional to how much your job looks like the
 thing being hunted.
 
-Costs reuse `stress_adaptive.PRICES` rather than inventing a second price list,
-so a framing attack and an evasion attack are quoted in the same currency and
-can be compared. Fully offline and deterministic; no model is called.
+This module reports no costs. It used to price each token from
+`stress_adaptive.PRICES` so a framing attack and an evasion attack were quoted
+in the same currency; that table was withdrawn (see below) and what is reported
+per token now is an access REQUIREMENT - `none` or `network-access`. Fully
+offline and deterministic; no model is called.
 
 Usage:
     python -m scripts.stress_framing
@@ -49,7 +51,6 @@ import argparse
 import json
 from pathlib import Path
 
-from scripts.stress_adaptive import PRICES
 from src import signals
 from src.attribute import _link_reason, build_actors, tokens
 from src.hunt import load, score_all

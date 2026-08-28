@@ -43,7 +43,8 @@ def jsonl(path: Path) -> list[dict]:
 
 WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six",
          7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "eleven",
-         12: "twelve"}
+         12: "twelve", 20: "twenty", 40: "forty", 60: "sixty", 80: "eighty",
+         100: "a hundred", 120: "a hundred and twenty"}
 
 
 def main() -> int:
@@ -169,6 +170,97 @@ def main() -> int:
                          f"{len(upheld)} of {len(unsound)} unsound cards "
                          f"upheld over {doc.get('reps')} reps")
 
+    # --- how many attacker cells the loose evasion definition inflated -----
+    # The README retracts that definition; the retraction said it inflated
+    # "every" count, and two of the four cells read the same either way.
+    am = ROOT / "data" / "attacker_matrix.json"
+    if am.is_file():
+        doc = json.loads(am.read_text())
+        phase_b = doc.get("b") or {}
+        loose = {"not_investigated", "monitor", "gather_more"}
+        inflated = 0
+        for runs in phase_b.values():
+            decisions = [r.get("final_decision") for r in runs]
+            if (sum(d in loose for d in decisions)
+                    != sum(d == "not_investigated" for d in decisions)):
+                inflated += 1
+        if phase_b:
+            want = f"**{WORDS.get(inflated, inflated)} of the {WORDS.get(len(phase_b), len(phase_b))}** attacker cells"
+            if want not in readme.replace("\n", " "):
+                fail(f"README must say the loose definition inflated "
+                     f"'{WORDS.get(inflated, inflated)} of the "
+                     f"{WORDS.get(len(phase_b), len(phase_b))} attacker "
+                     f"cells' - recomputing over attacker_matrix.json gives "
+                     f"{inflated} of {len(phase_b)}")
+            if "inflated every" in low:
+                fail("README says the loose evasion definition inflated "
+                     f"'every' count; it changed {inflated} of "
+                     f"{len(phase_b)} cells")
+
+    # --- how many fixture runs actually delete sessions --------------------
+    fx = ROOT / "scripts" / "stress_fixture.py"
+    fs = ROOT / "data" / "fixture_sensitivity.json"
+    if fx.is_file() and fs.is_file():
+        grid = re.search(r"DROPOUT_GRID\s*=\s*\[([^\]]+)\]", fx.read_text())
+        draws = (json.loads(fs.read_text()) or {}).get("draws_per_perturbation")
+        if grid and draws:
+            tiers = [float(x) for x in grid.group(1).replace(" ", "").split(",") if x]
+            deleting = sum(1 for t in tiers if t > 0) * int(draws)
+            forms = {WORDS.get(deleting, str(deleting)), str(deleting)}
+            if not any(f"{w} deliberately delete sessions" in low
+                       for w in forms):
+                fail(f"README must say "
+                     f"'{WORDS.get(deleting, deleting)} deliberately delete "
+                     f"sessions' - "
+                     f"{len([t for t in tiers if t > 0])} of {len(tiers)} "
+                     f"dropout tiers delete anything, at {draws} draws each")
+
+    # --- quotations attributed to a model must exist in the data -----------
+    # The sharpest failure this file exists to prevent: the judge section
+    # quoted the judge as accepting "the account has verified payment and
+    # phone information" as exculpatory. That string is nowhere in
+    # judge.json - what it actually accepted was an authorization
+    # hypothesis. A repo whose claim is "measured, not asserted" cannot put
+    # words in a model's mouth.
+    #
+    # Scope is by proximity: a quotation only has to be found in the data if
+    # it sits near a mention of a model or of the judge/reviewer runs. Prose
+    # quotations elsewhere in the document are the author's own.
+    corpus = ""
+    for name in ("judge.json", "reviewer.json", "findings.jsonl",
+                 "agentic.json", "appeal.json", "adaptive_log.jsonl",
+                 "attacker_matrix.json", "attacker_probe.json"):
+        f = ROOT / "data" / name
+        if f.is_file():
+            corpus += f.read_text(encoding="utf-8")
+    # Hand-authored attacker prose (cover stories, probes) lives in the code
+    # that plants it, which is just as much a source as the run output.
+    for sub in ("scripts", "src"):
+        d = ROOT / sub
+        if d.is_dir():
+            for f in sorted(d.glob("*.py")):
+                corpus += f.read_text(encoding="utf-8")
+    if corpus:
+        squeezed = " ".join(corpus.split())
+        # An ATTRIBUTION verb immediately before the quote, not mere
+        # proximity to a model name: the author quotes their own prose all
+        # over this document, and only the sentences that say a model said
+        # something are making a checkable claim.
+        attrib = re.compile(
+            r"\b(accepted|said|says|quoted|wrote|answered|replied|responded|"
+            r"reasoned|justified|called it|described it as|its words|"
+            r"in its own words)\b[^\n\"]{0,40}$", re.I)
+        for m in re.finditer(r'"([^"\n]{35,300})"', readme):
+            quote = m.group(1)
+            before = readme[max(0, m.start() - 90):m.start()]
+            if not attrib.search(before):
+                continue
+            if " ".join(quote.split()) in squeezed:
+                continue
+            fail(f"README attributes a quotation to a model that appears "
+                 f"nowhere in data/ or the code that plants it: "
+                 f"\"{' '.join(quote.split())[:80]}...\"")
+
     # --- every figure the README embeds exists -----------------------------
     for src in re.findall(r'(?:src|srcset)="(docs/figures/[^"]+)"', readme):
         if not (ROOT / src).is_file():
@@ -186,7 +278,7 @@ def main() -> int:
         return 1
     print("check_readme: OK (fixture shape, look-alikes, attacker "
           "constructions, errata counts, label-cost errors, reviewer run, "
-          "figures, commands)")
+          "evasion counts, dropout tiers, quotations, figures, commands)")
     return 0
 
 

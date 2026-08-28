@@ -706,14 +706,21 @@ Decorrelating made it worse. The stronger model rates the one assessment the
 investigator got *wrong* as `sound` in three reps out of three. It flags three
 of the four genuine actors — and rates the fourth, the five-account lure factory,
 `sound` with 0.0 failures, scoring it byte-identically to the innocent account. A
-reviewer trusting this judge is steered at the only legitimate user in the set
-and waved past the largest actor in it. It accepted "the account has verified payment
-and phone information" as genuine exculpatory evidence, which is precisely the
-reasoning the enforcement policy already refuses to accept.
+reviewer trusting this judge upholds the one enforcement that is wrong, and gets
+no signal to separate it from the one that is right: the innocent account and
+the five-account lure factory are scored byte-identically. What it accepted as
+exculpatory on the known error, in all three reps, was "the account is a
+corporate one, and its activity could be part of an authorized security research
+project within the corporate scope" — an *authorization* hypothesis, which is
+precisely the reasoning rule 4 declares inert. (This paragraph quoted the judge
+as accepting "verified payment and phone information"; that string is nowhere in
+`data/judge.json`. The judge said the sentence above.)
 
-Two further things the harness reports on itself: `disconfirming` and `dual_use`
-fail on **every** assessment, sound and unsound alike, which means those criteria
-measure the investigator's output format rather than its soundness; and before
+Two further things the harness reports on itself: under the `gpt-4o-mini` judge
+`disconfirming` and `dual_use` fail on **every** assessment, sound and unsound
+alike, which means those two criteria measure the investigator's output format
+rather than its soundness — and the decorrelated judge does not reproduce it
+(0/5 and 3/5), so the artefact is the judge's, not the rubric's alone; and before
 reps were added, consecutive single-rep runs gave margins of **+0.75 and +2.0** —
 the difference between "buys nothing" and "works", from the same code and the
 same data.
@@ -1147,7 +1154,9 @@ not one: at `monitor` the subject is still surfaced and still in an analyst's
 queue — being on the board is exactly what the attacker was trying to avoid. Only
 `not_investigated` means the pipeline never opened the account.
 
-The loose definition inflated every evasion count and manufactured a phantom
+The loose definition inflated **two of the four** attacker cells — `deepseek-r1:8b`
+from 1 to 3 and `llama3.1:8b` from 1 to 2, while `gpt-4o-mini` (3/3) and the
+abliterated twin (1/3) read the same either way — and it manufactured a phantom
 "$26 cheaper path" that contradicted `cost_frontier.py`'s exhaustive enumeration
 of all 64 baskets. The frontier was right — $26 leaves risk at 0.294, above the
 0.25 lead line, so the subject still surfaces. `EVASION_DECISIONS` now pins the
@@ -1632,9 +1641,13 @@ getting it right.
   institutional memory a real reviewer has, and it cannot escalate. The result
   bounds what the **artifact** supports, not what a human would do with it. A
   reviewer who can query the telemetry is a different — and untested — system.
-- The framing costs in finding #25 reuse `stress_adaptive.PRICES`, which are
-  order-of-magnitude figures rather than quotes. The $0 result does not depend
-  on them: it is free because matching a topic and naming an org cost nothing.
+- Finding #25 reports no costs at all, and this bullet used to caveat the ones
+  it reported. `stress_framing.py` did build a dollar table from
+  `stress_adaptive.PRICES`; it was removed, the import is now dead, and
+  `data/framing.json` contains no currency field — what it reports per token is
+  an *access requirement*, `none` or `network-access`. The result stands
+  unchanged and for the same reason: matching a topic and naming an org require
+  nothing at all.
 - A stray one: the generator shipped a session timestamped **hour 41**, from
   `21 + i * 20 % 24` where `(21 + i * 20) % 24` was meant — Python binds `%`
   tighter than `+`. Nothing validated it (`signals._minutes` slices characters
@@ -1787,7 +1800,7 @@ and then scored as the pipeline actually scores it:
 | 20b | **So I built the version the name promises — and my own dataset refuted the idea behind it.** An ordered arc that really tracks escalation over time fires on the one actor that genuinely develops capability, and correctly ignores every legitimate lookalike (benign leads 1 → 0). But it also loses 5 detections, because **3 of the 4 planted actors never escalate at all**: they repeat one thing at scale. Most model abuse is industrialised repetition, and the escalation-arc idea does not describe it. Measured, published, **not adopted** — 23 accounts cannot validate a new ranking scheme. | `stress_sensitivity` |
 | 20c | **The scores sit far closer to the decision line than any published number suggests.** One actor is **0.002** below the lead line; **2%** on `burner_infra` flips it, and **3%** on either of two others does. Three different thresholds beat the shipped one on this data — **deliberately not applied**, because tuning a threshold on the same 23 accounts you report results over is textbook overfitting. Separately: two of the seven signals, together **0.20 of the model**, change nothing under any perturbation. Functionally there are five signals, not seven. | `stress_sensitivity` |
 | 21 | **"Presence is not strength" turned out to have a third rung: strength is not sample size.** `refusal_farming` is a rate with no minimum denominator, so **one refusal in one session** scored full strength — enough on its own to satisfy the rule that an account may never be actioned on topic alone. A constructed account with one session and clean infrastructure reached **`enforce`**. The median account here has 3 sessions. Fixed at the enforcement gate rather than in the score, so **every real score and decision is unchanged** while the hole closes. The threshold is derived, and the harness asserts the derivation. | `src.policy` |
-| 22 | **The seed seeded nothing.** The plan was to re-run the generator across 50 seeds for error bars. It calls `random.seed(31337)` and then never calls a random function — the data is entirely hand-written, so 50 seeds would have produced 50 identical datasets and intervals of width zero. Error bars now come from perturbing the dataset instead. **0 false accusations across all 180 runs.** The recall numbers get a narrower scope on purpose: 9/9 found and 4/4 actors hold across the **60** runs that perturb the fixture without touching the scorer, which are the only ones that are error bars at all. Of the other 120, a hundred deliberately delete sessions — a degradation curve, where recall falls to 5/9 as designed — and twenty swap in finding #20b's scorer. The one thing that wobbles is whether the detection engineer trips the lead line, which hinges on **three minutes** of timing. (Reproduce with `--draws 20`; the bare command defaults to 100 draws and rewrites the artifact with five times the runs.) | `stress_fixture --draws 20` |
+| 22 | **The seed seeded nothing.** The plan was to re-run the generator across 50 seeds for error bars. It called `random.seed(31337)` and then never called a random function — the data is entirely hand-written, so 50 seeds would have produced 50 identical datasets and intervals of width zero. Error bars now come from perturbing the dataset instead. **0 false accusations across all 180 runs.** The recall numbers get a narrower scope on purpose: 9/9 found and 4/4 actors hold across the **60** runs that perturb the fixture without touching the scorer, which are the only ones that are error bars at all. Of the other 120, eighty deliberately delete sessions — five dropout tiers of twenty draws each, of which the 0.0 tier deletes nothing — a degradation curve, where recall falls to 5/9 as designed — and twenty swap in finding #20b's scorer. The one thing that wobbles is whether the detection engineer trips the lead line, which hinges on **three minutes** of timing. (Reproduce with `--draws 20`; the bare command defaults to 100 draws and rewrites the artifact with five times the runs.) | `stress_fixture --draws 20` |
 | 23 | **Detection needs history, and the attacker decides how much history to leave.** Cutting every account back to its first *k* sessions, the pipeline only reaches full strength at **k = 12**. At k = 1 it recovers **2 of 4** actors. The strongest signals are structurally unable to fire before then — baseline drift needs six sessions to have a baseline. So an operator who discards accounts at 11 sessions is not evading detection; **detection has not become possible yet**, and no amount of money is involved. | `stress_fixture` |
 | 24 | **Every headline number came from a single run of a non-deterministic model.** No temperature is pinned, so `findings.jsonl` is one draw — and it is the file the 0/14 and 9/9 are computed from. Finding #18 already made repeat runs mandatory *for the judge*; that lesson had never been applied here. Across 12 runs: **every enforcement decision is identical, every safety property holds every time.** The decisions are solid. The **confidence is not** — on the detection engineer the confidence band is a **coin flip**, and that band is exactly what the policy's floor gates on. | `stress_reps` |
 | 25 | **Attribution can be aimed, and I first published the aiming as easier than it is.** Earlier work priced *hiding*; finding #19 showed a wrongly-merged bystander cannot get out. Neither asked whether an attacker can **pick the victim**. Running the real linking rules against every innocent account: **5 of 14 can be attached to an attacker's account**, one of them with no barrier at all. But a standalone attacker only gets the victim **queued for review — 0 of 5 reach `enforce`.** Enforcement needs the victim attached to an *existing actor cluster*, which means reproducing that actor's infrastructure. The published number was "5 of 5 reach enforce", from a harness whose attacker was a copy of a real actor and therefore dragged the victim into the five-account lure factory; both constructions are now measured separately. The 9 who are safe are the ordinary users — an account becomes linkable exactly when its main activity is offensive or recon. **Your protection is inversely proportional to how much your job resembles the thing being hunted.** [Detail ↓](#getting-someone-else-investigated-on-purpose) | `stress_framing` |
